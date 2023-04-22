@@ -32,12 +32,11 @@ import com.xuexiang.xutil.common.ClickUtils.OnClick2ExitListener
  */
 @Page(name = "DataBinding使用演示", anim = CoreAnim.none)
 class MainFragment : BaseContainerFragment(), OnClick2ExitListener {
-    override fun getPagesClasses(): Array<Class<*>> {
-        return arrayOf( //此处填写fragment
-            EmptyDataBindingFragment::class.java,
-            EmptyViewBindingFragment::class.java
-        )
-    }
+
+    override fun getPagesClasses() = arrayOf(
+        //此处填写fragment
+        BasicUseFragment::class.java,
+    )
 
     override fun initTitle(): TitleBar? {
         return super.initTitle()?.setLeftClickListener { ClickUtils.exitBy2Click(2000, this) }

@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2019 xuexiangjys(xuexiangjys@163.com)
+ * Copyright (C) 2023 xuexiangjys(xuexiangjys@163.com)
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -14,27 +14,24 @@
  * limitations under the License.
  *
  */
+
 package com.xuexiang.databindingsample.fragment
 
-import com.xuexiang.databindingsample.R
-import com.xuexiang.databindingsample.core.DataBindingFragment
-import com.xuexiang.databindingsample.databinding.FragmentDataBindingEmptyBinding
+import com.xuexiang.databindingsample.core.BaseContainerFragment
+import com.xuexiang.databindingsample.fragment.basic.ClickBindFragment
 import com.xuexiang.xpage.annotation.Page
 
 /**
- * 这个是使用DataBinding布局，自动生成的是ViewDataBinding
+ * 基础使用
  *
  * @author xuexiang
- * @since 2019-07-08 00:52
+ * @since 2023/4/23 01:20
  */
-@Page(name = "DataBinding空页面")
-class EmptyDataBindingFragment : DataBindingFragment<FragmentDataBindingEmptyBinding?>() {
+@Page(name = "基础使用")
+class BasicUseFragment : BaseContainerFragment() {
 
-    override fun getLayoutId() = R.layout.fragment_data_binding_empty
-
-    /**
-     * 初始化控件
-     */
-    override fun initViews() {}
-
+    override fun getPagesClasses() = arrayOf(
+        //此处填写fragment
+        ClickBindFragment::class.java
+    )
 }

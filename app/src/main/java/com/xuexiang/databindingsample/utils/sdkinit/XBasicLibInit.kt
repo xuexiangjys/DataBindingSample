@@ -18,7 +18,7 @@ package com.xuexiang.databindingsample.utils.sdkinit
 
 import android.app.Application
 import com.xuexiang.databindingsample.MyApp
-import com.xuexiang.databindingsample.core.DataBindingActivity
+import com.xuexiang.databindingsample.core.databinding.DataBindingActivity
 import com.xuexiang.databindingsample.utils.XToastUtils
 import com.xuexiang.xaop.XAOP
 import com.xuexiang.xpage.PageConfig

@@ -14,7 +14,7 @@
  * limitations under the License.
  *
  */
-package com.xuexiang.databindingsample.core
+package com.xuexiang.databindingsample.core.viewbinding
 
 import android.content.Context
 import android.os.Bundle

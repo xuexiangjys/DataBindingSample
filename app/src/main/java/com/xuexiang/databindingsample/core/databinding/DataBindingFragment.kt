@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2019 xuexiangjys(xuexiangjys@163.com)
+ * Copyright (C) 2023 xuexiangjys(xuexiangjys@163.com)
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -14,15 +14,21 @@
  * limitations under the License.
  *
  */
-package com.xuexiang.databindingsample.core
+package com.xuexiang.databindingsample.core.databinding
 
 import android.content.res.Configuration
+import android.os.Bundle
 import android.os.Parcelable
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.databinding.DataBindingUtil
+import androidx.databinding.ViewDataBinding
+import androidx.databinding.library.baseAdapters.BR
 import androidx.fragment.app.Fragment
-import androidx.viewbinding.ViewBinding
+import androidx.lifecycle.LifecycleOwner
+import androidx.lifecycle.ViewModel
+import androidx.lifecycle.ViewModelProvider
 import com.umeng.analytics.MobclickAgent
 import com.xuexiang.xpage.base.XPageActivity
 import com.xuexiang.xpage.base.XPageFragment
@@ -36,40 +42,58 @@ import com.xuexiang.xui.widget.actionbar.TitleBar
 import com.xuexiang.xui.widget.actionbar.TitleUtils
 import com.xuexiang.xui.widget.progress.loading.IMessageLoader
 import java.io.Serializable
+import java.lang.reflect.ParameterizedType
 import java.lang.reflect.Type
+import kotlin.reflect.KClass
 
 /**
- * 基础fragment(ViewBinding)
+ * 基础fragment(DataBinding)
  *
  * @author xuexiang
  * @since 2018/5/25 下午3:44
  */
-abstract class ViewBindingFragment<Binding : ViewBinding?> : XPageFragment() {
+abstract class DataBindingFragment<DataBinding : ViewDataBinding?, VM : ViewModel> : XPageFragment(), OnDataBindingListener {
 
-    private var mIMessageLoader: IMessageLoader? = null
+    private var mMessageLoader: IMessageLoader? = null
 
     /**
-     * ViewBinding
+     * DataBinding, XML布局要加<layout></layout>
      */
-    var binding: Binding? = null
+    var binding: DataBinding? = null
         protected set
 
+    /**
+     * viewModel
+     */
+    open lateinit var viewModel: VM
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        viewModel = createViewModel()
+    }
+
+    open fun createViewModel(): VM {
+        val genericSuperclass = this.javaClass.genericSuperclass
+        return (genericSuperclass as ParameterizedType).actualTypeArguments.let { typeArray ->
+            // 因为ViewModel是第二个泛型，所以这里取typeArray[1]
+            ViewModelProvider(this).get(typeArray[1] as Class<VM>)
+        }
+    }
+
     override fun inflateView(inflater: LayoutInflater, container: ViewGroup): View? {
-        binding = viewBindingInflate(inflater, container)
-        return binding?.root
+        binding = DataBindingUtil.inflate<DataBinding>(inflater, getLayoutId(), container, false)
+        return binding?.bindViewModel(viewLifecycleOwner, viewModel, this)
     }
 
     /**
-     * 构建ViewBinding
-     *
-     * @param inflater  inflater
-     * @param container 容器
-     * @return ViewBinding
+     * DataBinding更新
+     * @param binding DataBinding
      */
-    protected abstract fun viewBindingInflate(
-        inflater: LayoutInflater,
-        container: ViewGroup
-    ): Binding
+    override fun onDataBindingUpdate(binding: ViewDataBinding) {
+
+    }
+
+    abstract fun getLayoutId(): Int
 
     override fun initPage() {
         initTitle()
@@ -83,20 +107,22 @@ abstract class ViewBindingFragment<Binding : ViewBinding?> : XPageFragment() {
 
     override fun initListeners() {}
 
+    //==========================================================//
+
     fun getMessageLoader(): IMessageLoader? {
-        if (mIMessageLoader == null) {
-            mIMessageLoader = WidgetUtils.getMiniLoadingDialog(requireContext())
+        if (mMessageLoader == null) {
+            mMessageLoader = WidgetUtils.getMiniLoadingDialog(requireContext())
         }
-        return mIMessageLoader
+        return mMessageLoader
     }
 
-    fun getMessageLoader(message: String?): IMessageLoader? {
-        if (mIMessageLoader == null) {
-            mIMessageLoader = WidgetUtils.getMiniLoadingDialog(requireContext(), message!!)
+    fun getMessageLoader(message: String): IMessageLoader? {
+        if (mMessageLoader == null) {
+            mMessageLoader = WidgetUtils.getMiniLoadingDialog(requireContext(), message)
         } else {
-            mIMessageLoader?.updateMessage(message)
+            mMessageLoader?.updateMessage(message)
         }
-        return mIMessageLoader
+        return mMessageLoader
     }
 
     override fun onConfigurationChanged(newConfig: Configuration) {
@@ -110,8 +136,17 @@ abstract class ViewBindingFragment<Binding : ViewBinding?> : XPageFragment() {
     }
 
     override fun onDestroyView() {
-        mIMessageLoader?.dismiss()
+        mMessageLoader?.dismiss()
+        mMessageLoader = null
         super.onDestroyView()
+        onDataBindingUnbind()
+    }
+
+    /**
+     * DataBinding解绑
+     */
+    override fun onDataBindingUnbind() {
+        binding?.unbind()
         binding = null
     }
 
@@ -124,6 +159,7 @@ abstract class ViewBindingFragment<Binding : ViewBinding?> : XPageFragment() {
         super.onPause()
         MobclickAgent.onPageEnd(pageName)
     }
+
     //==============================页面跳转api===================================//
     /**
      * 打开一个新的页面【建议只在主tab页使用】
@@ -331,9 +367,9 @@ abstract class ViewBindingFragment<Binding : ViewBinding?> : XPageFragment() {
      * @param object 需要序列化的对象
      * @return 序列化结果
      */
-    fun serializeObject(`object`: Any?): String {
+    fun serializeObject(target: Any?): String {
         return XRouter.getInstance().navigation(SerializationService::class.java)
-            .object2Json(`object`)
+            .object2Json(target)
     }
 
     /**
