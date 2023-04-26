@@ -15,25 +15,30 @@
  *
  */
 
-package com.xuexiang.databindingsample.fragment
+package com.xuexiang.databindingsample.fragment.basic.model
 
-import com.xuexiang.databindingsample.core.BaseContainerFragment
-import com.xuexiang.databindingsample.fragment.basic.BindingAdapterFragment
-import com.xuexiang.databindingsample.fragment.basic.ClickBindFragment
-import com.xuexiang.xpage.annotation.Page
+import com.xuexiang.databindingsample.core.databinding.DataBindingState
 
 /**
- * 基础使用
+ * 控件自定义属性绑定演示
+ * 使用@BindingAdapter进行绑定
+ *
+ *
  *
  * @author xuexiang
- * @since 2023/4/23 01:20
+ * @since 2023/4/23 00:20
  */
-@Page(name = "基础使用")
-class BasicUseFragment : BaseContainerFragment() {
+class AdapterState : DataBindingState() {
 
-    override fun getPagesClasses() = arrayOf(
-        //此处填写fragment
-        ClickBindFragment::class.java,
-        BindingAdapterFragment::class.java
-    )
+    override fun initTitle() = "控件自定义属性绑定演示"
+
+
+
 }
+
+data class User(
+    val name: String,
+    val gender: String? = "男",
+    val age: Int = 10,
+    val phone: String? = ""
+)

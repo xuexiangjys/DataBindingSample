@@ -67,20 +67,33 @@
                     android:onClick="@{state.onClickDecrement}"
                     android:text="减少"
                     app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintEnd_toStartOf="@id/btn_reset"
+                    app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toEndOf="@id/btn_increment"
                     app:layout_constraintTop_toTopOf="parent" />
 
                 <Button
-                    android:id="@+id/btn_reset"
+                    android:id="@+id/btn_reset1"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:layout_marginTop="16dp"
                     android:onClick="@{(view) -> state.onReset(view)}"
-                    android:text="重置"
+                    android:text="重置1"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toStartOf="@id/btn_reset2"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/btn_increment" />
+
+                <Button
+                    android:id="@+id/btn_reset2"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:onClick="@{state::onReset}"
+                    android:text="重置2"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintStart_toEndOf="@id/btn_decrement"
-                    app:layout_constraintTop_toTopOf="parent" />
+                    app:layout_constraintStart_toEndOf="@id/btn_reset1"
+                    app:layout_constraintTop_toTopOf="@id/btn_reset1" />
+
 
             </androidx.constraintlayout.widget.ConstraintLayout>
 

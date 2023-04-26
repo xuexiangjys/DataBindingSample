@@ -17,8 +17,6 @@
 
 package com.xuexiang.databindingsample.core.databinding
 
-import android.app.Application
-import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 
@@ -30,9 +28,12 @@ import androidx.lifecycle.ViewModel
  * @author xuexiang
  * @since 2023/4/22 23:24
  */
-open class DataBindingState : ViewModel() {
+abstract class DataBindingState : ViewModel() {
 
     val isLoading = MutableLiveData(false)
 
+    val title = MutableLiveData(this.initTitle())
+
+    abstract fun initTitle() : String
 
 }

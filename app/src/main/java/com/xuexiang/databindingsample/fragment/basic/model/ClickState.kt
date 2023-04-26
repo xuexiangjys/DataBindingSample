@@ -24,15 +24,20 @@ import java.util.concurrent.atomic.AtomicInteger
 
 /**
  * 点击状态，演示点击事件绑定
+ * 1.无参响应函数： android:onClick="@{() -> state.onIncrement()}"
+ * 2.接口变量响应函数： android:onClick="@{state.onClickDecrement}"
+ * 3.有参响应函数：  android:onClick="@{(view) -> state.onReset(view)}"
+ *                android:onClick="@{state::onReset}"
+ *                两者等价
  *
  * @author xuexiang
  * @since 2023/4/23 00:20
  */
 class ClickState : DataBindingState() {
 
-    private val count = AtomicInteger()
+    override fun initTitle() = "点击事件绑定演示"
 
-    val title = MutableLiveData("点击事件绑定演示")
+    private val count = AtomicInteger()
 
     fun onIncrement() {
         title.value = "Data:${count.incrementAndGet()}"
@@ -46,5 +51,6 @@ class ClickState : DataBindingState() {
         count.set(0)
         title.value = "Data:${count.get()}, view:${view.javaClass.simpleName}"
     }
+
 
 }
