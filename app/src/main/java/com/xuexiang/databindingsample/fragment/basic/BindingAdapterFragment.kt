@@ -25,8 +25,15 @@ import com.xuexiang.xpage.annotation.Page
 /**
  * 控件自定义属性绑定演示
  * 使用@BindingAdapter进行绑定
- *
- *
+ * BindingAdapter: 设置自定义属性. 可以覆盖系统原有属性
+ * BindingMethod/BindingMethods: 关联自定义属性到控件原有的setter方法
+ * BindingConversion: 如果属性不能匹配类型参数将自动根据类型参数匹配到该注解修饰的方法来转换
+ * InverseMethod: 负责实现视图和数据之间的转换
+ * InverseBindingAdapter: 视图通知数据刷新的
+ * InverseBindingMethod/InverseBindingMethods: 视图通知数据刷新的(如果存在已有getter方法可用的情况下)
+ * BindingMethods系优先级高于BindingAdapter系列
+ * 所有注解的功能都是基于XML属性值为Databinding表达式才生效(即@{})
+ * 建议参考官方实现源码: DataBindingAdapter: https://android.googlesource.com/platform/frameworks/data-binding/+/android-7.0.0_r19/extensions/baseAdapters/src/main/java/android/databinding/adapters?autodive=0/
  *
  * @author xuexiang
  * @since 2019-07-08 00:52

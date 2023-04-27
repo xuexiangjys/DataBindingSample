@@ -14,28 +14,27 @@
  * limitations under the License.
  *
  */
+package com.xuexiang.databindingsample.fragment.basic
 
-package com.xuexiang.databindingsample.fragment
-
-import com.xuexiang.databindingsample.core.BaseContainerFragment
-import com.xuexiang.databindingsample.fragment.basic.BindingAdapterFragment
-import com.xuexiang.databindingsample.fragment.basic.ClickBindFragment
-import com.xuexiang.databindingsample.fragment.basic.ExpressionFragment
+import com.xuexiang.databindingsample.R
+import com.xuexiang.databindingsample.core.databinding.DataBindingFragment
+import com.xuexiang.databindingsample.databinding.FragmentExpressionBinding
+import com.xuexiang.databindingsample.fragment.basic.model.ExpressionState
 import com.xuexiang.xpage.annotation.Page
 
 /**
- * 基础使用
+ * DataBinding中表达式的使用
  *
  * @author xuexiang
- * @since 2023/4/23 21:20
+ * @since 2019-07-08 00:52
  */
-@Page(name = "基础使用")
-class BasicUseFragment : BaseContainerFragment() {
+@Page(name = "@{}中表达式使用")
+class ExpressionFragment : DataBindingFragment<FragmentExpressionBinding?, ExpressionState>() {
 
-    override fun getPagesClasses() = arrayOf(
-        //此处填写fragment
-        ClickBindFragment::class.java,
-        BindingAdapterFragment::class.java,
-        ExpressionFragment::class.java
-    )
+    override fun getLayoutId() = R.layout.fragment_expression
+
+    /**
+     * 初始化控件
+     */
+    override fun initViews() {}
 }

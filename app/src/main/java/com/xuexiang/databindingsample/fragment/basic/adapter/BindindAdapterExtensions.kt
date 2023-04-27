@@ -20,6 +20,7 @@ package com.xuexiang.databindingsample.fragment.basic.adapter
 import android.widget.TextView
 import androidx.databinding.BindingAdapter
 
+// 1.顶级函数实现@BindingAdapter
 // Kotlin拓展函数式写法, 推荐使用
 @BindingAdapter("customTitle")
 fun TextView.setCustomTitle(title: String) {
@@ -32,9 +33,18 @@ fun setCustomTitle1(view: TextView, title: String) {
     view.text = "标题2: $title"
 }
 
-// 多个参数进行绑定，requireAll=true，代表两个参数都设置了才生效
+// 多个参数进行绑定，requireAll=true，代表两个参数都设置了才生效，默认是true，如果requireAll为false, 你没有填写的属性值将为null. 所以需要做非空判断.
 @BindingAdapter(value = ["customTitle", "customSize"], requireAll = true)
 fun TextView.setTextContent(title: String, size: Int) {
     text = "标题3: $title"
     textSize = size.toFloat()
+}
+
+// 2.单例类+@JvmStatic注解
+object TitleAdapter {
+    @JvmStatic
+    @BindingAdapter("customTitle2")
+    fun setCustomTitle2(view: TextView, title: String) {
+        view.text = "标题4: $title"
+    }
 }

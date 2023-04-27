@@ -17,12 +17,16 @@
 
 package com.xuexiang.databindingsample.fragment.basic.model
 
+import android.widget.TextView
+import androidx.databinding.BindingAdapter
+import androidx.databinding.BindingConversion
+import androidx.lifecycle.MutableLiveData
 import com.xuexiang.databindingsample.core.databinding.DataBindingState
 
 /**
  * 控件自定义属性绑定演示
  * 使用@BindingAdapter进行绑定
- *
+ * 进行DataBinding的使用，一定要使用 "@{}" 进行赋值。
  *
  *
  * @author xuexiang
@@ -32,7 +36,7 @@ class AdapterState : DataBindingState() {
 
     override fun initTitle() = "控件自定义属性绑定演示"
 
-
+    val user = MutableLiveData(User("小明"))
 
 }
 
@@ -42,3 +46,13 @@ data class User(
     val age: Int = 10,
     val phone: String? = ""
 )
+
+// 本来User中的age是int，和这里的age定义的string不匹配，编译器会报错，但是因为有个下面的 @BindingConversion 进行自动类型转化，所以就不会报错
+@BindingAdapter(value = ["name", "age"], requireAll = true)
+fun TextView.setUserInfo(name: String, age: String) {
+    text = "${name}今年${age}岁"
+}
+
+// 属性值自动进行类型转换
+@BindingConversion
+fun int2string(integer: Int) = integer.toString()
