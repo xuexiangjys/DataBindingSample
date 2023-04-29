@@ -44,7 +44,8 @@ data class User(
     val name: String,
     val gender: String? = "男",
     val age: Int = 10,
-    val phone: String? = ""
+    val phone: String? = "13124765438",
+    val address: String? = null
 )
 
 // 本来User中的age是int，和这里的age定义的string不匹配，编译器会报错，但是因为有个下面的 @BindingConversion 进行自动类型转化，所以就不会报错
@@ -56,3 +57,11 @@ fun TextView.setUserInfo(name: String, age: String) {
 // 属性值自动进行类型转换
 @BindingConversion
 fun int2string(integer: Int) = integer.toString()
+
+
+
+
+@BindingAdapter("android:userInfo")
+fun TextView.setUserInfo(user: User) {
+    text = "姓名: ${user.name}, 性别: ${user.gender}, 年龄: ${user.age}岁"
+}

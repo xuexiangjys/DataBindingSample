@@ -107,6 +107,8 @@ abstract class DataBindingFragment<DataBinding : ViewDataBinding?, VM : ViewMode
 
     override fun initListeners() {}
 
+    override fun initViews() {}
+
     //==========================================================//
 
     fun getMessageLoader(): IMessageLoader? {

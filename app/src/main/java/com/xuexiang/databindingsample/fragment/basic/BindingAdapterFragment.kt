@@ -42,9 +42,4 @@ import com.xuexiang.xpage.annotation.Page
 class BindingAdapterFragment : DataBindingFragment<FragmentBindingAdapterBinding?, AdapterState>() {
 
     override fun getLayoutId() = R.layout.fragment_binding_adapter
-
-    /**
-     * 初始化控件
-     */
-    override fun initViews() {}
 }

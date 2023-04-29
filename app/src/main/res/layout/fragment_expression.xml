@@ -19,6 +19,8 @@
 
     <data>
 
+        <import type="android.view.View"/>
+
         <variable
             name="state"
             type="com.xuexiang.databindingsample.fragment.basic.model.ExpressionState" />
@@ -30,6 +32,10 @@
         <variable name="list" type="List&lt;String>"/>
         <variable name="sparse" type="SparseArray&lt;String>"/>
         <variable name="map" type="Map&lt;String, String>"/>
+
+        <variable
+            name="user"
+            type="com.xuexiang.databindingsample.fragment.basic.model.User" />
 
     </data>
 
@@ -59,6 +65,30 @@
                 style="@style/TextStyle.Content"
                 android:layout_marginTop="16dp"
                 android:text="@{@string/user_format(`小红`, `女`)}" />
+
+            <TextView
+                style="@style/TextStyle.Content"
+                android:layout_marginTop="16dp"
+                android:text="@{`key: key1, value:` + map[`key1`]}" />
+
+            <TextView
+                style="@style/TextStyle.Content"
+                android:layout_marginTop="16dp"
+                android:text="@{`key: key1, value:` + map[`key1`]}" />
+
+            <TextView
+                style="@style/TextStyle.Content"
+                android:layout_marginTop="16dp"
+                android:userInfo="@{state.user}"
+                android:visibility="@{!state.user.phone.empty &amp;&amp; state.user.age > 5 ? View.VISIBLE : View.GONE}"/>
+
+            <!--    state.user.address ?? `默认地址`
+                        等价于
+                    state.user.address != null ?  state.user.address : `默认地址`  -->
+            <TextView
+                style="@style/TextStyle.Content"
+                android:layout_marginTop="16dp"
+                android:text="@{`地址：` + (state.user.address ?? `默认地址`)}"/>
 
         </LinearLayout>
 

@@ -16,20 +16,27 @@
  */
 package com.xuexiang.databindingsample.fragment.basic
 
+import android.view.View
 import com.xuexiang.databindingsample.R
 import com.xuexiang.databindingsample.core.databinding.DataBindingFragment
-import com.xuexiang.databindingsample.databinding.FragmentClickBindBinding
-import com.xuexiang.databindingsample.fragment.basic.model.ClickState
+import com.xuexiang.databindingsample.databinding.FragmentIncludeViewstubBinding
+import com.xuexiang.databindingsample.fragment.basic.model.IncludeViewStubState
 import com.xuexiang.xpage.annotation.Page
 
 /**
- * 点击事件绑定演示
+ * DataBinding中include和viewStub的使用
  *
  * @author xuexiang
  * @since 2019-07-08 00:52
  */
-@Page(name = "点击事件绑定")
-class ClickBindFragment : DataBindingFragment<FragmentClickBindBinding?, ClickState>() {
+@Page(name = "include和viewStub使用")
+class IncludeViewStubFragment : DataBindingFragment<FragmentIncludeViewstubBinding?, IncludeViewStubState>() {
 
-    override fun getLayoutId() = R.layout.fragment_click_bind
+    override fun getLayoutId() = R.layout.fragment_include_viewstub
+
+    override fun initViews() {
+        viewModel.onClickLoadViewStub = View.OnClickListener {
+            binding?.userInfo?.viewStub?.inflate()
+        }
+    }
 }

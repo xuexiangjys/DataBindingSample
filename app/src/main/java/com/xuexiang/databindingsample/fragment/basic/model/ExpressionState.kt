@@ -44,7 +44,7 @@ import com.xuexiang.databindingsample.core.databinding.DataBindingState
  * ÷除号	&divide; &#247;
  *
  * 资源使用
- * @string @color @drawable @dimen
+ * @string @color @drawable @dimen @array
  *
  * 集合
  * <import type="java.util.List"/>
@@ -64,3 +64,4 @@ class ExpressionState : DataBindingState() {
 
 
 }
+

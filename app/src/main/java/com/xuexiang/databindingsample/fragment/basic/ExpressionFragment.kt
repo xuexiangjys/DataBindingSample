@@ -16,6 +16,8 @@
  */
 package com.xuexiang.databindingsample.fragment.basic
 
+import androidx.databinding.ViewDataBinding
+import androidx.databinding.library.baseAdapters.BR
 import com.xuexiang.databindingsample.R
 import com.xuexiang.databindingsample.core.databinding.DataBindingFragment
 import com.xuexiang.databindingsample.databinding.FragmentExpressionBinding
@@ -31,10 +33,11 @@ import com.xuexiang.xpage.annotation.Page
 @Page(name = "@{}中表达式使用")
 class ExpressionFragment : DataBindingFragment<FragmentExpressionBinding?, ExpressionState>() {
 
+    private val map = mapOf("key1" to "111", "key2" to "222")
+
     override fun getLayoutId() = R.layout.fragment_expression
 
-    /**
-     * 初始化控件
-     */
-    override fun initViews() {}
+    override fun onDataBindingUpdate(binding: ViewDataBinding) {
+        binding.setVariable(BR.map, map)
+    }
 }

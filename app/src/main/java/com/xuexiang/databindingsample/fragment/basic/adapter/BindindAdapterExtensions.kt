@@ -17,6 +17,7 @@
 
 package com.xuexiang.databindingsample.fragment.basic.adapter
 
+import android.view.View
 import android.widget.TextView
 import androidx.databinding.BindingAdapter
 
@@ -47,4 +48,14 @@ object TitleAdapter {
     fun setCustomTitle2(view: TextView, title: String) {
         view.text = "标题4: $title"
     }
+}
+
+@BindingAdapter("visibleIf")
+fun View.setVisibleIf(isVisible: Boolean) {
+    visibility = if (isVisible) View.VISIBLE else View.GONE
+}
+
+@BindingAdapter("goneIf")
+fun View.setGoneIf(isGone: Boolean) {
+    visibility = if (isGone) View.GONE else View.VISIBLE
 }
