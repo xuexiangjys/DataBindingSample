@@ -54,6 +54,9 @@ import com.xuexiang.databindingsample.core.databinding.DataBindingState
  * <variable name="sparse" type="SparseArray&lt;String>"/>
  * <variable name="map" type="Map&lt;String, String>"/>
  *
+ * 引用方法
+ * 注意这里指的是静态方法。使用<import type="xxx"/>导入类
+ *
  *
  */
 class ExpressionState : DataBindingState() {
@@ -64,4 +67,5 @@ class ExpressionState : DataBindingState() {
 
 
 }
+
 

@@ -37,6 +37,8 @@
             name="user"
             type="com.xuexiang.databindingsample.fragment.basic.model.User" />
 
+        <import type="com.xuexiang.databindingsample.utils.AppUtils"/>
+
     </data>
 
     <LinearLayout
@@ -76,6 +78,12 @@
                 android:layout_marginTop="16dp"
                 android:userInfo="@{state.user}"
                 android:visibility="@{!state.user.phone.empty &amp;&amp; state.user.age > 5 ? View.VISIBLE : View.GONE}"/>
+
+            <TextView
+                style="@style/TextStyle.Content"
+                android:layout_marginTop="16dp"
+                android:singleLine="false"
+                android:text="@{AppUtils.getAppInfo(context)}"/>
 
             <!--    state.user.address ?? `默认地址`
                         等价于

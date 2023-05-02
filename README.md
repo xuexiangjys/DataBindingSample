@@ -202,10 +202,10 @@ fun int2string(integer: Int) = integer.toString()
 
 2. 常用转义字符
 
-* 空格	\&nbsp;
-* <小于号 \&lt;
-* \>大于号 \&gt;
-* &与号	\&amp;
+* 空格:  \&nbsp;
+* <小于号:  \&lt;
+* \>大于号:  \&gt;
+* &与号:	 \&amp;
 
 ```xml
 <TextView 
@@ -243,7 +243,40 @@ fun int2string(integer: Int) = integer.toString()
     android:text="@{`key: key1, value:` + map[`key1`]}" />
 ```
 
-5. 空值合并运算符
+5. 引用类的静态方法
+
+kotlin中定义静态方法，一定要在方法上加上`@JvmStatic`，否则将无法成功引用。
+
+(1) 定义方法
+```kotlin
+object AppUtils {
+
+    @JvmStatic
+    fun getAppInfo(context: Context?) =
+        context?.let {
+            "packageName: ${it.packageName}, \nversionName: ${
+                it.packageManager.getPackageInfo(
+                    it.packageName,
+                    0
+                ).versionName
+            }"
+        }
+}
+```
+(2) 导入方法所在类路径
+
+```xml
+<import type="com.xuexiang.databindingsample.utils.AppUtils"/>
+```
+
+(3) 引用方法
+
+```xml
+<TextView
+    android:text="@{AppUtils.getAppInfo(context)}"/>
+```
+
+6. 空值合并运算符
 
 空值合并运算符 ?? 会取第一个不为 null 的值作为返回值。
 
@@ -258,9 +291,88 @@ fun int2string(integer: Int) = integer.toString()
     android:text="@{state.user.address != null ?  state.user.address : `默认地址`)}"/>
 ```
 
+### 5.include 和 viewStub
+
+在主布局文件中将相应的变量传递给 include 布局，需使用自定义的 bind 命名空间将变量传递给 （include/ViewStub）， 从而使两个布局文件之间共享同一个变量。
+
+例如，在include中定义的变量id是：<variable name="user" type="...User"/>, 那么就使用 app:user="@{state.user}" 来绑定数据，与variable定义的name保持一致。
+
+1. include
+
+```xml
+<include
+    layout="@layout/include_user_info"
+    app:user="@{state.user}" />
+```
+
+```xml
+<layout xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <data>
+
+        <variable
+            name="user"
+            type="com.xuexiang.databindingsample.fragment.basic.model.User" />
+
+    </data>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginVertical="16dp"
+        android:orientation="vertical">
+
+        <TextView
+            style="@style/TextStyle.Content"
+            android:userInfo="@{user}" />
+
+    </LinearLayout>
+</layout>
+```
+
+2. viewStub
+
+```xml
+<ViewStub
+    android:id="@+id/user_info"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginTop="16dp"
+    android:layout="@layout/viewstub_user_info"
+    app:info="@{state.user}" />
+```
+
+```xml
+<layout xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <data>
+
+        <variable
+            name="info"
+            type="com.xuexiang.databindingsample.fragment.basic.model.User" />
+
+    </data>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginVertical="16dp"
+        android:orientation="vertical">
+
+        <TextView
+            style="@style/TextStyle.Content"
+            android:userInfo="@{info}" />
+
+    </LinearLayout>
+</layout>
+```
+
+
 ## 特别感谢
 
 * [Android 安卓DataBinding详解(超详细)](https://blog.csdn.net/qq_40881680/article/details/102240892)
+* [DataBinding最全使用说明](https://juejin.cn/post/6844903549223059463)
+* [Android DataBinding 从入门到进阶](https://juejin.cn/post/6844903609079971854)
 
 ## 如果觉得项目还不错，可以考虑打赏一波
 
