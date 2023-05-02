@@ -178,8 +178,85 @@ fun int2string(integer: Int) = integer.toString()
 
 ### 4.@{}中表达式使用
 
+1. 常用运算符
 
+* 算术 + - / * %
+* 字符串合并 +
+* 逻辑 && ||
+* 二元 & | ^
+* 一元 + - ! ~
+* 移位 >> >>> <<
+* 比较 == > < >= <=
+* 三元 ?:
+* Array 访问 \[\]
 
+```xml
+<TextView
+    android:text="@{@string/app_name +  @string/app_name}"/>
+```
+
+```xml
+<TextView 
+    android:visibility="@{!state.user.phone.empty ? View.VISIBLE : View.GONE}"/>
+```
+
+2. 常用转义字符
+
+* 空格	&nbsp;
+* <小于号 &lt;
+* \>大于号 &gt;
+* &与号	&amp;
+
+```xml
+<TextView 
+    android:visibility="@{!state.user.phone.empty &amp;&amp; state.user.age > 5 ? View.VISIBLE : View.GONE}"/>
+```
+
+3. 资源使用
+
+@string @color @drawable @dimen @array
+
+```xml
+<TextView
+    style="@style/TextStyle.Content"
+    android:text="@{@string/user_format(state.user.name, state.user.gender)}"
+    android:textColor="@{@color/toast_error_color}"
+    android:textSize="@{@dimen/xui_config_size_content_text_phone}" />
+```
+
+4. 集合
+
+集合不属于`java.lang*`下, 需要导入全路径。集合使用\[\]进行访问。
+
+```xml
+<data>
+    <import type="java.util.List"/>
+    <import type="android.util.SparseArray"/>
+    <import type="java.util.Map"/>
+    <variable name="list" type="List&lt;String>"/>
+    <variable name="sparse" type="SparseArray&lt;String>"/>
+    <variable name="map" type="Map&lt;String, String>"/>
+</data>
+```
+```xml
+<TextView
+    android:text="@{`key: key1, value:` + map[`key1`]}" />
+```
+
+5. 空值合并运算符
+
+空值合并运算符 ?? 会取第一个不为 null 的值作为返回值。
+
+```xml
+<TextView
+    android:text="@{`地址：` + (state.user.address ?? `默认地址`)}"/>
+```
+等价于
+
+```xml
+<TextView
+    android:text="@{state.user.address != null ?  state.user.address : `默认地址`)}"/>
+```
 
 ## 特别感谢
 

@@ -74,11 +74,6 @@
             <TextView
                 style="@style/TextStyle.Content"
                 android:layout_marginTop="16dp"
-                android:text="@{`key: key1, value:` + map[`key1`]}" />
-
-            <TextView
-                style="@style/TextStyle.Content"
-                android:layout_marginTop="16dp"
                 android:userInfo="@{state.user}"
                 android:visibility="@{!state.user.phone.empty &amp;&amp; state.user.age > 5 ? View.VISIBLE : View.GONE}"/>
 
