@@ -202,10 +202,10 @@ fun int2string(integer: Int) = integer.toString()
 
 2. 常用转义字符
 
-* 空格	&nbsp;
-* <小于号 &lt;
-* \>大于号 &gt;
-* &与号	&amp;
+* 空格	\&nbsp;
+* <小于号 \&lt;
+* \>大于号 \&gt;
+* &与号	\&amp;
 
 ```xml
 <TextView 
