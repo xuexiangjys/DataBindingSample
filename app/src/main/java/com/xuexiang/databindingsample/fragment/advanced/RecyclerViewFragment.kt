@@ -15,28 +15,24 @@
  *
  */
 
-package com.xuexiang.databindingsample.fragment
+package com.xuexiang.databindingsample.fragment.advanced
 
 import com.xuexiang.databindingsample.core.BaseContainerFragment
-import com.xuexiang.databindingsample.fragment.basic.BindingAdapterFragment
-import com.xuexiang.databindingsample.fragment.basic.ClickBindFragment
-import com.xuexiang.databindingsample.fragment.basic.ExpressionFragment
-import com.xuexiang.databindingsample.fragment.basic.IncludeViewStubFragment
+import com.xuexiang.databindingsample.fragment.advanced.recyclerview.RecyclerViewBasicFragment
+import com.xuexiang.databindingsample.fragment.advanced.recyclerview.RecyclerViewRefreshFragment
 import com.xuexiang.xpage.annotation.Page
 
 /**
- * 基础使用演示
+ * 简化RecycleView的使用演示
  *
  * @author xuexiang
- * @since 2023/4/23 21:20
+ * @since 2023/5/2 16:42
  */
-@Page(name = "基础使用演示")
-class BasicUseFragment : BaseContainerFragment() {
+@Page(name = "简化RecycleView的使用")
+class RecyclerViewFragment : BaseContainerFragment() {
 
     override fun getPagesClasses() = arrayOf(
-        ClickBindFragment::class.java,
-        BindingAdapterFragment::class.java,
-        ExpressionFragment::class.java,
-        IncludeViewStubFragment::class.java,
+        RecyclerViewBasicFragment::class.java,
+        RecyclerViewRefreshFragment::class.java,
     )
 }

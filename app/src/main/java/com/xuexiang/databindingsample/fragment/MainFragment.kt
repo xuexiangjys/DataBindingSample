@@ -34,8 +34,8 @@ import com.xuexiang.xutil.common.ClickUtils.OnClick2ExitListener
 class MainFragment : BaseContainerFragment(), OnClick2ExitListener {
 
     override fun getPagesClasses() = arrayOf(
-        //此处填写fragment
         BasicUseFragment::class.java,
+        AdvancedUseFragment::class.java
     )
 
     override fun initTitle(): TitleBar? {

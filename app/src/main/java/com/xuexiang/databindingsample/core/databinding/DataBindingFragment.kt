@@ -72,6 +72,7 @@ abstract class DataBindingFragment<DataBinding : ViewDataBinding?, VM : ViewMode
         viewModel = createViewModel()
     }
 
+    @Suppress("UNCHECKED_CAST")
     open fun createViewModel(): VM {
         val genericSuperclass = this.javaClass.genericSuperclass
         return (genericSuperclass as ParameterizedType).actualTypeArguments.let { typeArray ->

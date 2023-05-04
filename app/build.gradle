@@ -112,6 +112,10 @@ dependencies {
 
     //美团多渠道打包
     implementation 'com.meituan.android.walle:library:1.1.6'
+
+    implementation  'io.github.scwang90:refresh-layout-kernel:2.0.6'
+    implementation  'io.github.scwang90:refresh-header-classics:2.0.6'
+    implementation  'io.github.scwang90:refresh-footer-classics:2.0.6'
 }
 
 //x-library依赖脚本

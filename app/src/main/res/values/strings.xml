@@ -2,4 +2,7 @@
     <string name="app_name">DataBindingSample</string>
 
     <string name="user_format">名字: %s  性别: %s</string>
+
+    <string name="item_example_number_title">第%02d条数据</string>
+    <string name="item_example_number_subtitle">这是测试的第%02d条数据</string>
 </resources>

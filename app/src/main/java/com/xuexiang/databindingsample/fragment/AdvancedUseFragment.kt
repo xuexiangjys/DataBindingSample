@@ -15,15 +15,22 @@
  *
  */
 
-package com.xuexiang.databindingsample.fragment.basic.adapter
+package com.xuexiang.databindingsample.fragment
 
-import android.content.res.ColorStateList
-import android.graphics.drawable.ColorDrawable
-import androidx.databinding.BindingConversion
+import com.xuexiang.databindingsample.core.BaseContainerFragment
+import com.xuexiang.databindingsample.fragment.advanced.RecyclerViewFragment
+import com.xuexiang.xpage.annotation.Page
 
-// 属性值自动进行类型转换
-@BindingConversion
-fun convertColorToDrawable(color: Int) = ColorDrawable(color)
+/**
+ * 进阶使用演示
+ *
+ * @author xuexiang
+ * @since 2023/5/2 16:42
+ */
+@Page(name = "进阶使用演示")
+class AdvancedUseFragment : BaseContainerFragment() {
 
-@BindingConversion
-fun convertColorToColorStateList(color: Int) = ColorStateList.valueOf(color)
+    override fun getPagesClasses() = arrayOf(
+        RecyclerViewFragment::class.java,
+    )
+}

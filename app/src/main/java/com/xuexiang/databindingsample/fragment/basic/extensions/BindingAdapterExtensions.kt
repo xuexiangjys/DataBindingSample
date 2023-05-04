@@ -15,7 +15,7 @@
  *
  */
 
-package com.xuexiang.databindingsample.fragment.basic.adapter
+package com.xuexiang.databindingsample.fragment.basic.extensions
 
 import android.view.View
 import android.widget.TextView

@@ -5,6 +5,9 @@
     <color name="colorAccent">#299EE3</color>
 
 
+    <color name="custom_divider_color">@color/xui_config_color_red</color>
+
+
     <!--Toast，可自定义喜欢的颜色-->
     <color name="toast_default_text_color" tools:ignore="PrivateResource">@color/xui_config_color_white</color>
     <color name="toast_error_color" tools:ignore="PrivateResource">@color/xui_config_color_red</color>
