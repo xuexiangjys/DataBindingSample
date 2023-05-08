@@ -19,18 +19,23 @@ package com.xuexiang.databindingsample.fragment.advanced.recyclerview
 
 import com.xuexiang.databindingsample.R
 import com.xuexiang.databindingsample.core.databinding.DataBindingFragment
-import com.xuexiang.databindingsample.databinding.FragmentRecyclerviewBasicBinding
-import com.xuexiang.databindingsample.fragment.advanced.model.RecyclerViewSimpleState
+import com.xuexiang.databindingsample.databinding.FragmentRecyclerviewRefreshBinding
+import com.xuexiang.databindingsample.fragment.advanced.model.RecyclerViewRefreshState
 import com.xuexiang.xpage.annotation.Page
 
 /**
- * 简化RecycleView的使用
+ * RecyclerView的刷新和加载更多演示
  *
  * @author xuexiang
  * @since 2023/5/2 16:44
  */
 @Page(name = "RecyclerView的刷新和加载更多")
-class RecyclerViewRefreshFragment : DataBindingFragment<FragmentRecyclerviewBasicBinding?, RecyclerViewSimpleState>() {
+class RecyclerViewRefreshFragment :
+    DataBindingFragment<FragmentRecyclerviewRefreshBinding?, RecyclerViewRefreshState>() {
 
     override fun getLayoutId() = R.layout.fragment_recyclerview_refresh
+
+    override fun initViews() {
+        binding?.refreshLayout?.autoRefresh()
+    }
 }

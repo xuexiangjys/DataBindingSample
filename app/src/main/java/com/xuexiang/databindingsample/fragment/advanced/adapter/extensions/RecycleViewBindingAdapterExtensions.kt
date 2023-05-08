@@ -36,12 +36,13 @@ import kotlin.math.roundToInt
  * @since 2023/5/2 16:53
  */
 @BindingAdapter(
-    value = ["data", "itemLayout", "dividerHeight", "dividerColor", "selectedPosition", "itemClick", "itemLongClick"],
+    value = ["data", "itemLayout", "loadState", "dividerHeight", "dividerColor", "selectedPosition", "itemClick", "itemLongClick"],
     requireAll = false
 )
 fun <T> RecyclerView.setBindingRecyclerViewAdapter(
     data: List<T>?,
     @LayoutRes layoutId: Int?,
+    loadState: LoadState? = LoadState.DEFAULT,
     dividerHeight: Float? = null,
     @ColorInt dividerColor: Int? = null,
     selectedPosition: Int? = null,
@@ -53,7 +54,7 @@ fun <T> RecyclerView.setBindingRecyclerViewAdapter(
     if (adapter == null) {
         adapter = BindingRecyclerViewAdapter(
             layoutId,
-            data,
+            data.toMutableList(),
             selectedPosition,
             onItemClickListener,
             onItemLongClickListener
@@ -62,10 +63,13 @@ fun <T> RecyclerView.setBindingRecyclerViewAdapter(
         setDividerStyle(dividerHeight, dividerColor)
     } else {
         @Suppress("UNCHECKED_CAST")
-        (adapter as? BindingRecyclerViewAdapter<T>)?.refresh(
-            data,
-            selectedPosition = selectedPosition
-        )
+        (adapter as? BindingRecyclerViewAdapter<T>)?.run {
+            when (loadState) {
+                LoadState.REFRESH -> refresh(data, selectedPosition)
+                LoadState.LOAD_MORE -> loadMore(data)
+                else -> {}
+            }
+        }
     }
 }
 
@@ -82,4 +86,10 @@ fun RecyclerView.setDividerStyle(
         divider.dividerColor = it
     }
     addItemDecoration(divider)
+}
+
+enum class LoadState {
+    DEFAULT,
+    REFRESH,
+    LOAD_MORE
 }

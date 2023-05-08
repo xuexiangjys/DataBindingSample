@@ -33,7 +33,7 @@ import androidx.recyclerview.widget.RecyclerView
  */
 class BindingRecyclerViewAdapter<T>(
     @LayoutRes val layoutId: Int,
-    var data: List<T>,
+    var dataSource: MutableList<T>,
     var selectedPosition: Int?,
     var onItemClickListener: OnItemClickListener<T>?,
     var onItemLongClickListener: OnItemLongClickListener<T>?,
@@ -51,13 +51,13 @@ class BindingRecyclerViewAdapter<T>(
         onItemClickListener?.run {
             holder.itemView.setOnClickListener {
                 val position = holder.itemView.tag as Int
-                onItemClick(it, data.getOrNull(position), position)
+                onItemClick(it, dataSource.getOrNull(position), position)
             }
         }
         onItemLongClickListener?.run {
             holder.itemView.setOnLongClickListener {
                 val position = holder.itemView.tag as Int
-                onItemLongClick(it, data.getOrNull(position), position)
+                onItemLongClick(it, dataSource.getOrNull(position), position)
             }
         }
         binding.lifecycleOwner = holder
@@ -66,7 +66,7 @@ class BindingRecyclerViewAdapter<T>(
 
 
     override fun onBindViewHolder(holder: BindingViewHolder<T>, position: Int) {
-        holder.setDataBindingVariables(data.getOrNull(position))
+        holder.setDataBindingVariables(dataSource.getOrNull(position))
         selectedPosition?.let {
             holder.itemView.isSelected = position == it
         }
@@ -74,15 +74,24 @@ class BindingRecyclerViewAdapter<T>(
         if (holder.binding.hasPendingBindings()) holder.binding.executePendingBindings()
     }
 
-    override fun getItemCount() = data.size
+    override fun getItemCount() = dataSource.size
 
     @SuppressLint("NotifyDataSetChanged")
-    fun refresh(data: List<T>, selectedPosition: Int?) {
-        this.data = data
-        this.selectedPosition = selectedPosition
-        notifyDataSetChanged()
+    fun refresh(data: List<T>, position: Int?) {
+        if (data.isNotEmpty()) {
+            dataSource = data.toMutableList()
+            selectedPosition = position
+            notifyDataSetChanged()
+        }
     }
 
+    @SuppressLint("NotifyDataSetChanged")
+    fun loadMore(data: List<T>) {
+        if (data.isNotEmpty()) {
+            dataSource.addAll(data)
+            notifyDataSetChanged()
+        }
+    }
 
     override fun onViewAttachedToWindow(holder: BindingViewHolder<T>) {
         holder.onAttached()

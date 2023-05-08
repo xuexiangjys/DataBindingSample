@@ -16,13 +16,14 @@
   -->
 
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools">
 
     <data>
 
         <variable
             name="state"
-            type="com.xuexiang.databindingsample.fragment.advanced.model.RecyclerViewSimpleState" />
+            type="com.xuexiang.databindingsample.fragment.advanced.model.RecyclerViewRefreshState" />
     </data>
 
     <LinearLayout
@@ -31,8 +32,11 @@
         android:orientation="vertical">
 
         <com.scwang.smart.refresh.layout.SmartRefreshLayout
+            android:id="@+id/refreshLayout"
             android:layout_width="match_parent"
-            android:layout_height="match_parent">
+            android:layout_height="match_parent"
+            app:loadMoreListener="@{state.loadMoreListener}"
+            app:refreshListener="@{state.refreshListener}">
 
             <com.scwang.smart.refresh.header.ClassicsHeader
                 android:layout_width="match_parent"
@@ -44,7 +48,10 @@
                 android:layout_height="match_parent"
                 android:background="@android:color/white"
                 android:overScrollMode="never"
-                tools:listitem="@android:layout/simple_list_item_2" />
+                app:data="@{state.sampleData}"
+                app:itemLayout="@{@layout/databinding_item_simple_list_2}"
+                app:loadState="@{state.loadState}"
+                tools:listitem="@layout/databinding_item_simple_list_2" />
 
             <com.scwang.smart.refresh.footer.ClassicsFooter
                 android:layout_width="match_parent"

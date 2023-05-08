@@ -18,41 +18,21 @@
 package com.xuexiang.databindingsample.fragment.advanced.model
 
 import android.app.Application
-import android.content.Context
 import androidx.lifecycle.MutableLiveData
-import com.xuexiang.databindingsample.R
 import com.xuexiang.databindingsample.core.databinding.DataBindingPageState
 
 /**
- * 简单的RecycleView使用演示
+ * RecycleView的基础使用演示
  *
  * @author xuexiang
  * @since 2023/4/23 00:20
  */
-class RecyclerViewSimpleState(application: Application) : DataBindingPageState(application) {
+class RecyclerViewBasicState(application: Application) : DataBindingPageState(application) {
 
-    override fun initTitle() = "简单的RecycleView使用演示"
+    override fun initTitle() = "RecycleView的基础使用演示"
 
     val sampleData = MutableLiveData(getDemoData(application))
 
 }
 
-
-fun getDemoData(context: Context): List<SimpleItem> {
-    val list = mutableListOf<SimpleItem>()
-    for (index in 1..40) {
-        list.add(
-            SimpleItem(
-                context.getString(R.string.item_example_number_title, index),
-                context.getString(R.string.item_example_number_subtitle, index)
-            )
-        )
-    }
-    return list
-}
-
-data class SimpleItem(
-    val title: String? = "",
-    val subTitle: String? = "",
-)
 
