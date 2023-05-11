@@ -54,8 +54,8 @@ abstract class ViewBindingFragment<Binding : ViewBinding?> : XPageFragment() {
     var binding: Binding? = null
         protected set
 
-    override fun inflateView(inflater: LayoutInflater, container: ViewGroup): View? {
-        binding = viewBindingInflate(inflater, container)
+    override fun onCreateContentView(inflater: LayoutInflater, container: ViewGroup?, attachToRoot: Boolean): View? {
+        binding = viewBindingInflate(inflater, container, attachToRoot)
         onViewBindingUpdate(binding)
         return binding?.root
     }
@@ -76,7 +76,7 @@ abstract class ViewBindingFragment<Binding : ViewBinding?> : XPageFragment() {
      * @return ViewBinding
      */
     protected abstract fun viewBindingInflate(
-        inflater: LayoutInflater, container: ViewGroup
+        inflater: LayoutInflater, container: ViewGroup?, attachToRoot: Boolean
     ): Binding
 
     override fun initPage() {

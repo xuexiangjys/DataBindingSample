@@ -28,41 +28,34 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:layout_margin="16dp"
         android:orientation="vertical">
 
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_margin="16dp"
-            android:orientation="vertical">
+        <TextView
+            style="@style/TextStyle.Title"
+            app:customTitle="@{state.title}" />
 
-            <TextView
-                style="@style/TextStyle.Title"
-                app:customTitle="@{state.title}" />
+        <TextView
+            style="@style/TextStyle.Title"
+            android:layout_marginTop="16dp"
+            app:customTitle1="@{state.title}" />
 
-            <TextView
-                style="@style/TextStyle.Title"
-                android:layout_marginTop="16dp"
-                app:customTitle1="@{state.title}" />
+        <TextView
+            style="@style/TextStyle.Title"
+            android:layout_marginTop="16dp"
+            app:customSize="@{25}"
+            app:customTitle="@{state.title}" />
 
-            <TextView
-                style="@style/TextStyle.Title"
-                android:layout_marginTop="16dp"
-                app:customTitle="@{state.title}"
-                app:customSize="@{25}"/>
+        <TextView
+            style="@style/TextStyle.Title"
+            android:layout_marginTop="16dp"
+            app:customTitle2="@{state.title}" />
 
-            <TextView
-                style="@style/TextStyle.Title"
-                android:layout_marginTop="16dp"
-                app:customTitle2="@{state.title}"/>
-
-            <TextView
-                style="@style/TextStyle.Title"
-                android:layout_marginTop="16dp"
-                app:name="@{state.user.name}"
-                app:age="@{state.user.age}"/>
-
-        </LinearLayout>
+        <TextView
+            style="@style/TextStyle.Title"
+            android:layout_marginTop="16dp"
+            app:age="@{state.user.age}"
+            app:name="@{state.user.name}" />
 
     </LinearLayout>
 

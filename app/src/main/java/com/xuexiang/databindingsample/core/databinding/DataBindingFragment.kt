@@ -81,8 +81,8 @@ abstract class DataBindingFragment<DataBinding : ViewDataBinding?, VM : ViewMode
         }
     }
 
-    override fun inflateView(inflater: LayoutInflater, container: ViewGroup): View? {
-        binding = DataBindingUtil.inflate<DataBinding>(inflater, getLayoutId(), container, false)
+    override fun onCreateContentView(inflater: LayoutInflater, container: ViewGroup?, attachToRoot: Boolean): View? {
+        binding = DataBindingUtil.inflate<DataBinding>(inflater, getLayoutId(), container, attachToRoot)
         return binding?.bindViewModel(viewLifecycleOwner, viewModel, this)
     }
 
