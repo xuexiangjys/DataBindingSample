@@ -24,9 +24,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.databinding.DataBindingUtil
 import androidx.databinding.ViewDataBinding
-import androidx.databinding.library.baseAdapters.BR
 import androidx.fragment.app.Fragment
-import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import com.umeng.analytics.MobclickAgent
@@ -44,7 +42,6 @@ import com.xuexiang.xui.widget.progress.loading.IMessageLoader
 import java.io.Serializable
 import java.lang.reflect.ParameterizedType
 import java.lang.reflect.Type
-import kotlin.reflect.KClass
 
 /**
  * 基础fragment(DataBinding)
@@ -103,7 +100,7 @@ abstract class DataBindingFragment<DataBinding : ViewDataBinding?, VM : ViewMode
     }
 
     open fun initTitle(): TitleBar? {
-        return TitleUtils.addTitleBarDynamic(rootView as ViewGroup, pageTitle) { popToBack() }
+        return TitleUtils.addTitleBarDynamic(toolbarContainer, pageTitle) { popToBack() }
     }
 
     override fun initListeners() {}
