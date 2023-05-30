@@ -367,6 +367,580 @@ object AppUtils {
 </layout>
 ```
 
+## 进阶使用
+
+### 简化RecycleView的使用
+
+1.定义一个供绑定的ViewHolder
+
+```kotlin
+class BindingViewHolder<T>(val binding: ViewDataBinding) : RecyclerView.ViewHolder(binding.root), LifecycleOwner {
+
+    private val mLifecycle = LifecycleRegistry(this)
+
+    fun bindingData(data: T?, variableId: Int = BR.item) {
+        binding.setVariable(variableId, data)
+    }
+
+    init {
+        mLifecycle.currentState = Lifecycle.State.INITIALIZED
+    }
+
+    fun onAttached() {
+        mLifecycle.currentState = Lifecycle.State.STARTED
+    }
+
+    fun onDetached() {
+        mLifecycle.currentState = Lifecycle.State.RESUMED
+    }
+
+    override fun getLifecycle(): Lifecycle = mLifecycle
+
+}
+```
+
+2.定义一个供绑定的RecyclerView.Adapter
+
+```kotlin
+
+class BindingRecyclerViewAdapter<T>(
+    @LayoutRes val layoutId: Int,
+    var dataSource: MutableList<T>
+) : RecyclerView.Adapter<BindingViewHolder<T>>() {
+
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): BindingViewHolder<T> {
+        val layoutInflater = LayoutInflater.from(parent.context)
+        val binding = DataBindingUtil.inflate<ViewDataBinding>(
+            layoutInflater,
+            layoutId,
+            parent,
+            false
+        )
+        val holder = BindingViewHolder<T>(binding)
+        binding.lifecycleOwner = holder
+        return holder
+    }
+
+
+    override fun onBindViewHolder(holder: BindingViewHolder<T>, position: Int) {
+        holder.setDataBindingVariables(dataSource.getOrNull(position))
+        holder.itemView.tag = position
+        if (holder.binding.hasPendingBindings()) holder.binding.executePendingBindings()
+    }
+
+    override fun getItemCount() = dataSource.size
+
+    @SuppressLint("NotifyDataSetChanged")
+    fun refresh(data: List<T>) {
+        if (data.isNotEmpty()) {
+            dataSource = data.toMutableList()
+            notifyDataSetChanged()
+        }
+    }
+
+    @SuppressLint("NotifyDataSetChanged")
+    fun loadMore(data: List<T>) {
+        if (data.isNotEmpty()) {
+            dataSource.addAll(data)
+            notifyDataSetChanged()
+        }
+    }
+
+    override fun onViewAttachedToWindow(holder: BindingViewHolder<T>) {
+        holder.onAttached()
+    }
+
+    override fun onViewDetachedFromWindow(holder: BindingViewHolder<T>) {
+        holder.onDetached()
+    }
+
+    override fun onViewRecycled(holder: BindingViewHolder<T>) {
+        holder.binding.lifecycleOwner = null
+        super.onViewRecycled(holder)
+    }
+}
+```
+
+3.使用@BindingAdapter自定义绑定方法
+
+```kotlin
+@BindingAdapter(
+    value = ["data", "itemLayout", "loadState"],
+    requireAll = false
+)
+fun <T> RecyclerView.setBindingRecyclerViewAdapter(
+    data: List<T>?,
+    @LayoutRes layoutId: Int?,
+    loadState: LoadState? = LoadState.DEFAULT,
+) {
+    requireNotNull(data) { "app:data argument cannot be null!" }
+    requireNotNull(layoutId) { "app:itemLayout argument cannot be null!" }
+
+    if (adapter == null) {
+        adapter = BindingRecyclerViewAdapter(layoutId, data.toMutableList())
+        layoutManager = XLinearLayoutManager(context)
+    } else {
+        @Suppress("UNCHECKED_CAST")
+        (adapter as? BindingRecyclerViewAdapter<T>)?.run {
+            when (loadState) {
+                LoadState.REFRESH -> refresh(data, selectedPosition)
+                LoadState.LOAD_MORE -> loadMore(data)
+                else -> {}
+            }
+        }
+    }
+}
+```
+
+4.在xml中进行数据绑定
+
+```xml
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <data>
+
+        <variable
+            name="state"
+            type="com.xuexiang.databindingsample.fragment.advanced.model.RecyclerViewBasicState" />
+    </data>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/recyclerView"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="@android:color/white"
+            android:overScrollMode="never"
+            app:data="@{state.sampleData}"
+            app:itemLayout="@{@layout/databinding_item_simple_list_2}" />
+
+    </LinearLayout>
+</layout>
+```
+
+5.在ViewModel中设置数据
+
+```kotlin
+
+class RecyclerViewBasicState(application: Application) : DataBindingPageState(application) {
+
+    override fun initTitle() = "RecycleView的基础使用演示"
+
+    val sampleData = MutableLiveData(getDemoData(application))
+
+    fun getDemoData(context: Context, from: Int = 1, to: Int = 40): List<SimpleItem> {
+        // 模拟数据加载
+        val list = mutableListOf<SimpleItem>()
+        for (index in from..to) {
+            list.add(
+                SimpleItem(
+                    context.getString(R.string.item_example_number_title, index),
+                    context.getString(R.string.item_example_number_subtitle, index)
+                )
+            )
+        }
+        return list
+    }
+}
+```
+
+这样，有了这样一套绑定体系后，后面我们再需要使用到RecyclerView的时候，就只需要4和5步就行了，1-3步都是可重复使用的。
+
+### RecycleView的进阶使用
+
+我们除了可以简单地使用DataBinding去加载RecyclerView的数据，我们还可以拓展其他一些操作来增强对RecyclerView的使用。
+
+1.分割线的颜色和高度
+
+```kotlin
+@BindingAdapter(
+    value = ["data", "itemLayout", "loadState", "dividerHeight", "dividerColor"],
+    requireAll = false
+)
+fun <T> RecyclerView.setBindingRecyclerViewAdapter(
+    data: List<T>?,
+    @LayoutRes layoutId: Int?,
+    loadState: LoadState? = LoadState.DEFAULT,
+    dividerHeight: Float? = null,
+    @ColorInt dividerColor: Int? = null,
+) {
+    requireNotNull(data) { "app:data argument cannot be null!" }
+    requireNotNull(layoutId) { "app:itemLayout argument cannot be null!" }
+
+    if (adapter == null) {
+        adapter = BindingRecyclerViewAdapter(layoutId, data.toMutableList())
+        layoutManager = XLinearLayoutManager(context)
+        setDividerStyle(dividerHeight, dividerColor)
+    } else {
+        @Suppress("UNCHECKED_CAST")
+        (adapter as? BindingRecyclerViewAdapter<T>)?.run {
+            when (loadState) {
+                LoadState.REFRESH -> refresh(data, selectedPosition)
+                LoadState.LOAD_MORE -> loadMore(data)
+                else -> {}
+            }
+        }
+    }
+}
+
+fun RecyclerView.setDividerStyle(
+    dividerHeight: Float? = null,
+    @ColorInt dividerColor: Int? = null
+) {
+    val divider = DividerItemDecoration(context, LinearLayoutManager.VERTICAL)
+    dividerHeight?.let {
+        divider.dividerHeight = it.roundToInt()
+    }
+    dividerColor?.let {
+        divider.dividerColor = it
+    }
+    addItemDecoration(divider)
+}
+
+```
+
+2.事件监听
+
+(1) 定义监听接口
+
+```kotlin
+/**
+ * 列表条目点击监听
+ */
+interface OnItemClickListener<T> {
+    /**
+     * 条目点击
+     *
+     * @param itemView 条目
+     * @param item     数据
+     * @param position 索引
+     */
+    fun onItemClick(itemView: View?, item: T?, position: Int)
+}
+
+/**
+ * 列表条目长按监听
+ */
+interface OnItemLongClickListener<T> {
+    /**
+     * 条目长按
+     *
+     * @param itemView 条目
+     * @param item     数据
+     * @param position 索引
+     */
+    fun onItemLongClick(itemView: View?, item: T?, position: Int) : Boolean = true
+}
+```
+
+(2) Adapter设置监听
+
+```kotlin
+class BindingRecyclerViewAdapter<T>(
+    @LayoutRes val layoutId: Int,
+    var dataSource: MutableList<T>,
+    var onItemClickListener: OnItemClickListener<T>?,
+    var onItemLongClickListener: OnItemLongClickListener<T>?,
+) : RecyclerView.Adapter<BindingViewHolder<T>>() {
+
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): BindingViewHolder<T> {
+        val layoutInflater = LayoutInflater.from(parent.context)
+        val holder = createViewHolder(layoutInflater, parent, viewType)
+        initViewHolder(holder)
+        return holder
+    }
+
+    private fun initViewHolder(holder: BindingViewHolder<T>) {
+        onItemClickListener?.run {
+            holder.itemView.setOnClickListener {
+                val position = holder.itemView.tag as Int
+                onItemClick(it, dataSource.getOrNull(position), position)
+            }
+        }
+        onItemLongClickListener?.run {
+            holder.itemView.setOnLongClickListener {
+                val position = holder.itemView.tag as Int
+                onItemLongClick(it, dataSource.getOrNull(position), position)
+            }
+        }
+    }
+
+    override fun onBindViewHolder(holder: BindingViewHolder<T>, position: Int) {
+        holder.bindingData(dataSource.getOrNull(position))
+        holder.itemView.tag = position
+        if (holder.binding.hasPendingBindings()) holder.binding.executePendingBindings()
+    }
+}
+```
+
+(3) 使用@BindingAdapter自定义绑定方法
+
+```kotlin
+@BindingAdapter(
+    value = ["data", "itemLayout", "loadState", "dividerHeight", "dividerColor", "itemClick", "itemLongClick"],
+    requireAll = false
+)
+fun <T> RecyclerView.setBindingRecyclerViewAdapter(
+    data: List<T>?,
+    @LayoutRes layoutId: Int?,
+    loadState: LoadState? = LoadState.DEFAULT,
+    dividerHeight: Float? = null,
+    @ColorInt dividerColor: Int? = null,
+    onItemClickListener: OnItemClickListener<T>? = null,
+    onItemLongClickListener: OnItemLongClickListener<T>? = null,
+) {
+    requireNotNull(data) { "app:data argument cannot be null!" }
+    require(layoutId != null || itemViewParser != null) { "app:itemLayout and app:itemViewParser argument need a parameter that is not null!" }
+
+    if (adapter == null) {
+        adapter = BindingRecyclerViewAdapter(
+            layoutId,
+            data.toMutableList(),
+            onItemClickListener,
+            onItemLongClickListener
+        )
+        layoutManager = XLinearLayoutManager(context)
+        setDividerStyle(dividerHeight, dividerColor)
+    } else {
+        @Suppress("UNCHECKED_CAST")
+        (adapter as? BindingRecyclerViewAdapter<T>)?.run {
+            when (loadState) {
+                LoadState.REFRESH -> refresh(data, selectedPosition)
+                LoadState.LOAD_MORE -> loadMore(data)
+                else -> {}
+            }
+        }
+    }
+}
+```
+
+3.多布局类型加载
+
+(1) 定义布局解析器接口
+
+```kotlin
+
+interface ItemViewParser {
+
+    fun getItemViewType(position: Int): Int
+
+    fun getItemLayoutId(viewType: Int): Int
+}
+```
+
+(2) 增加布局解析器默认实现
+
+```kotlin
+class DefaultItemViewParser(@LayoutRes val layoutId: Int): ItemViewParser {
+
+    override fun getItemViewType(position: Int) = 0
+
+    override fun getItemLayoutId(viewType: Int) = layoutId
+
+}
+```
+
+(3) 重写Adapter的`onCreateViewHolder`方法和`getItemViewType`方法
+
+```kotlin
+class BindingRecyclerViewAdapter<T>(
+    private val itemViewParser: ItemViewParser,
+    var dataSource: MutableList<T>,
+    var onItemClickListener: OnItemClickListener<T>?,
+    var onItemLongClickListener: OnItemLongClickListener<T>?,
+) : RecyclerView.Adapter<BindingViewHolder<T>>() {
+
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): BindingViewHolder<T> {
+        val layoutInflater = LayoutInflater.from(parent.context)
+        val holder = createViewHolder(layoutInflater, parent, viewType)
+        initViewHolder(holder)
+        return holder
+    }
+
+    private fun createViewHolder(
+        layoutInflater: LayoutInflater,
+        parent: ViewGroup,
+        viewType: Int
+    ): BindingViewHolder<T> {
+        val binding = DataBindingUtil.inflate<ViewDataBinding>(
+            layoutInflater,
+            itemViewParser.getItemLayoutId(viewType),
+            parent,
+            false
+        )
+        val holder = BindingViewHolder<T>(binding)
+        binding.lifecycleOwner = holder
+        return holder
+    }
+
+    override fun getItemViewType(position: Int): Int {
+        return itemViewParser.getItemViewType(position)
+    }
+}
+```
+
+(4) 使用@BindingAdapter自定义绑定方法
+
+```kotlin
+@BindingAdapter(
+    value = ["data", "itemLayout", "itemViewParser", "loadState", "dividerHeight", "dividerColor", "itemClick", "itemLongClick"],
+    requireAll = false
+)
+fun <T> RecyclerView.setBindingRecyclerViewAdapter(
+    data: List<T>?,
+    @LayoutRes layoutId: Int?,
+    itemViewParser: ItemViewParser?,
+    loadState: LoadState? = LoadState.DEFAULT,
+    dividerHeight: Float? = null,
+    @ColorInt dividerColor: Int? = null,
+    onItemClickListener: OnItemClickListener<T>? = null,
+    onItemLongClickListener: OnItemLongClickListener<T>? = null,
+) {
+    requireNotNull(data) { "app:data argument cannot be null!" }
+    require(layoutId != null || itemViewParser != null) { "app:itemLayout and app:itemViewParser argument need a parameter that is not null!" }
+
+    if (adapter == null) {
+        adapter = BindingRecyclerViewAdapter(
+            itemViewParser ?: DefaultItemViewParser(layoutId!!),
+            data.toMutableList(),
+            onItemClickListener,
+            onItemLongClickListener
+        )
+        layoutManager = XLinearLayoutManager(context)
+        setDividerStyle(dividerHeight, dividerColor)
+    } else {
+        @Suppress("UNCHECKED_CAST")
+        (adapter as? BindingRecyclerViewAdapter<T>)?.run {
+            when (loadState) {
+                LoadState.REFRESH -> refresh(data, selectedPosition)
+                LoadState.LOAD_MORE -> loadMore(data)
+                else -> {}
+            }
+        }
+    }
+}
+```
+
+4.刷新和加载更多
+
+这里为了简单，我使用了开源的SmartRefreshLayout组件实现上拉刷新，下拉加载。
+
+（1）使用@BindingAdapter自定义绑定方法
+
+```kotlin
+
+@BindingAdapter(
+    value = ["refreshListener", "loadMoreListener"],
+    requireAll = false
+)
+fun SmartRefreshLayout.setRefreshLayoutListener(
+    refreshListener: OnRefreshListener?,
+    loadMoreListener: OnLoadMoreListener?
+) {
+    setOnRefreshListener(refreshListener)
+    setOnLoadMoreListener(loadMoreListener)
+}
+```
+
+（2）在xml中进行数据绑定
+
+```xml
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+
+        <variable
+            name="state"
+            type="com.xuexiang.databindingsample.fragment.advanced.model.RecyclerViewRefreshState" />
+    </data>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+
+        <com.scwang.smart.refresh.layout.SmartRefreshLayout
+            android:id="@+id/refreshLayout"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            app:loadMoreListener="@{state.loadMoreListener}"
+            app:refreshListener="@{state.refreshListener}">
+
+            <com.scwang.smart.refresh.header.ClassicsHeader
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" />
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/recyclerView"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:background="@android:color/white"
+                android:overScrollMode="never"
+                app:data="@{state.sampleData}"
+                app:itemLayout="@{@layout/databinding_item_simple_list_2}"
+                app:loadState="@{state.loadState}"
+                tools:listitem="@layout/databinding_item_simple_list_2" />
+
+            <com.scwang.smart.refresh.footer.ClassicsFooter
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" />
+
+        </com.scwang.smart.refresh.layout.SmartRefreshLayout>
+
+    </LinearLayout>
+</layout>
+```
+
+（3）在ViewModel中设置数据
+
+```kotlin
+
+class RecyclerViewRefreshState(application: Application) : DataBindingPageState(application) {
+
+    val sampleData = MutableLiveData<List<SimpleItem>>(arrayListOf())
+
+    val loadState = MutableLiveData(LoadState.DEFAULT)
+
+    var pageIndex = 0
+
+    val refreshListener = OnRefreshListener { refreshLayout ->
+        // 延迟1000ms模拟网络请求延时
+        refreshLayout.layout.postDelayed({
+            pageIndex = 0
+            loadState.value = LoadState.REFRESH
+            sampleData.value = sampleGetData(application)
+            refreshLayout.finishRefresh()
+            refreshLayout.resetNoMoreData()
+        }, 1000)
+    }
+
+    val loadMoreListener = OnLoadMoreListener { refreshLayout ->
+        refreshLayout.layout.postDelayed({
+            pageIndex += 1
+            loadState.value = LoadState.LOAD_MORE
+            sampleData.value = sampleGetData(application)
+            if (pageIndex >= 3) { // 模拟只能加载更多3页，即总共4页的数据
+                refreshLayout.finishLoadMoreWithNoMoreData()
+            } else {
+                refreshLayout.finishLoadMore()
+            }
+        }, 1000)
+    }
+
+    /**
+     * 模拟获取数据
+     */
+    private fun sampleGetData(context: Context) =
+        getDemoData(context, pageIndex * PAGE_SIZE + 1, PAGE_SIZE * (pageIndex + 1))
+}
+```
 
 ## 特别感谢
 

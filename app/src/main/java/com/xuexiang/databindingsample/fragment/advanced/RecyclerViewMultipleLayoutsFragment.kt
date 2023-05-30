@@ -17,23 +17,20 @@
 
 package com.xuexiang.databindingsample.fragment.advanced
 
-import com.xuexiang.databindingsample.core.BaseContainerFragment
-import com.xuexiang.databindingsample.fragment.advanced.recyclerview.RecyclerViewBasicFragment
-import com.xuexiang.databindingsample.fragment.advanced.recyclerview.RecyclerViewRefreshFragment
+import com.xuexiang.databindingsample.R
+import com.xuexiang.databindingsample.core.databinding.DataBindingFragment
+import com.xuexiang.databindingsample.databinding.FragmentRecyclerviewMultipleLayoutsBinding
+import com.xuexiang.databindingsample.fragment.advanced.model.RecyclerViewMultipleLayoutState
 import com.xuexiang.xpage.annotation.Page
 
 /**
- * 简化RecycleView的使用演示
+ * RecycleView的多种布局演示
  *
  * @author xuexiang
- * @since 2023/5/2 16:42
+ * @since 2023/5/2 16:44
  */
-@Page(name = "简化RecycleView的使用")
-class RecyclerViewFragment : BaseContainerFragment() {
+@Page(name = "RecycleView的多种布局演示")
+class RecyclerViewMultipleLayoutsFragment : DataBindingFragment<FragmentRecyclerviewMultipleLayoutsBinding?, RecyclerViewMultipleLayoutState>() {
 
-    override fun getPagesClasses() = arrayOf(
-        RecyclerViewBasicFragment::class.java,
-        RecyclerViewMultipleLayoutsFragment::class.java,
-        RecyclerViewRefreshFragment::class.java,
-    )
+    override fun getLayoutId() = R.layout.fragment_recyclerview_multiple_layouts
 }

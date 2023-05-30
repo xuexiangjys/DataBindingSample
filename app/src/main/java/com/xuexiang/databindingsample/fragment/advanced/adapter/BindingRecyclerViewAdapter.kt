@@ -20,7 +20,6 @@ package com.xuexiang.databindingsample.fragment.advanced.adapter
 import android.annotation.SuppressLint
 import android.view.LayoutInflater
 import android.view.ViewGroup
-import androidx.annotation.LayoutRes
 import androidx.databinding.DataBindingUtil
 import androidx.databinding.ViewDataBinding
 import androidx.recyclerview.widget.RecyclerView
@@ -32,7 +31,7 @@ import androidx.recyclerview.widget.RecyclerView
  * @since 2023/5/4 23:20
  */
 class BindingRecyclerViewAdapter<T>(
-    @LayoutRes val layoutId: Int,
+    private val itemViewParser: ItemViewParser,
     var dataSource: MutableList<T>,
     var selectedPosition: Int?,
     var onItemClickListener: OnItemClickListener<T>?,
@@ -41,13 +40,28 @@ class BindingRecyclerViewAdapter<T>(
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): BindingViewHolder<T> {
         val layoutInflater = LayoutInflater.from(parent.context)
+        val holder = createViewHolder(layoutInflater, parent, viewType)
+        initViewHolder(holder)
+        return holder
+    }
+
+    private fun createViewHolder(
+        layoutInflater: LayoutInflater,
+        parent: ViewGroup,
+        viewType: Int
+    ): BindingViewHolder<T> {
         val binding = DataBindingUtil.inflate<ViewDataBinding>(
             layoutInflater,
-            layoutId,
+            itemViewParser.getItemLayoutId(viewType),
             parent,
             false
         )
         val holder = BindingViewHolder<T>(binding)
+        binding.lifecycleOwner = holder
+        return holder
+    }
+
+    private fun initViewHolder(holder: BindingViewHolder<T>) {
         onItemClickListener?.run {
             holder.itemView.setOnClickListener {
                 val position = holder.itemView.tag as Int
@@ -60,13 +74,10 @@ class BindingRecyclerViewAdapter<T>(
                 onItemLongClick(it, dataSource.getOrNull(position), position)
             }
         }
-        binding.lifecycleOwner = holder
-        return holder
     }
 
-
     override fun onBindViewHolder(holder: BindingViewHolder<T>, position: Int) {
-        holder.setDataBindingVariables(dataSource.getOrNull(position))
+        holder.bindingData(dataSource.getOrNull(position))
         selectedPosition?.let {
             holder.itemView.isSelected = position == it
         }
@@ -91,6 +102,10 @@ class BindingRecyclerViewAdapter<T>(
             dataSource.addAll(data)
             notifyDataSetChanged()
         }
+    }
+
+    override fun getItemViewType(position: Int): Int {
+        return itemViewParser.getItemViewType(position)
     }
 
     override fun onViewAttachedToWindow(holder: BindingViewHolder<T>) {

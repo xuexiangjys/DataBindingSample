@@ -22,10 +22,7 @@ import androidx.annotation.LayoutRes
 import androidx.databinding.BindingAdapter
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import com.xuexiang.databindingsample.fragment.advanced.adapter.BindingRecyclerViewAdapter
-import com.xuexiang.databindingsample.fragment.advanced.adapter.DividerItemDecoration
-import com.xuexiang.databindingsample.fragment.advanced.adapter.OnItemClickListener
-import com.xuexiang.databindingsample.fragment.advanced.adapter.OnItemLongClickListener
+import com.xuexiang.databindingsample.fragment.advanced.adapter.*
 import com.xuexiang.xui.adapter.recyclerview.XLinearLayoutManager
 import kotlin.math.roundToInt
 
@@ -36,12 +33,13 @@ import kotlin.math.roundToInt
  * @since 2023/5/2 16:53
  */
 @BindingAdapter(
-    value = ["data", "itemLayout", "loadState", "dividerHeight", "dividerColor", "selectedPosition", "itemClick", "itemLongClick"],
+    value = ["data", "itemLayout", "itemViewParser", "loadState", "dividerHeight", "dividerColor", "selectedPosition", "itemClick", "itemLongClick"],
     requireAll = false
 )
 fun <T> RecyclerView.setBindingRecyclerViewAdapter(
     data: List<T>?,
     @LayoutRes layoutId: Int?,
+    itemViewParser: ItemViewParser?,
     loadState: LoadState? = LoadState.DEFAULT,
     dividerHeight: Float? = null,
     @ColorInt dividerColor: Int? = null,
@@ -50,10 +48,11 @@ fun <T> RecyclerView.setBindingRecyclerViewAdapter(
     onItemLongClickListener: OnItemLongClickListener<T>? = null,
 ) {
     requireNotNull(data) { "app:data argument cannot be null!" }
-    requireNotNull(layoutId) { "app:itemLayout argument cannot be null!" }
+    require(layoutId != null || itemViewParser != null) { "app:itemLayout and app:itemViewParser argument need a parameter that is not null!" }
+
     if (adapter == null) {
         adapter = BindingRecyclerViewAdapter(
-            layoutId,
+            itemViewParser ?: DefaultItemViewParser(layoutId!!),
             data.toMutableList(),
             selectedPosition,
             onItemClickListener,
@@ -93,3 +92,5 @@ enum class LoadState {
     REFRESH,
     LOAD_MORE
 }
+
+

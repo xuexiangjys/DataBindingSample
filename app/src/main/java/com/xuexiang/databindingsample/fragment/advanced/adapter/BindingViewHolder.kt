@@ -17,6 +17,7 @@
 
 package com.xuexiang.databindingsample.fragment.advanced.adapter
 
+import androidx.annotation.LayoutRes
 import androidx.databinding.ViewDataBinding
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.LifecycleOwner
@@ -36,7 +37,7 @@ class BindingViewHolder<T>(val binding: ViewDataBinding) : RecyclerView.ViewHold
 
     private val mLifecycle = LifecycleRegistry(this)
 
-    fun setDataBindingVariables(data: T?, variableId: Int = BR.item) {
+    fun bindingData(data: T?, variableId: Int = BR.item) {
         binding.setVariable(variableId, data)
     }
 
@@ -54,4 +55,25 @@ class BindingViewHolder<T>(val binding: ViewDataBinding) : RecyclerView.ViewHold
 
     override fun getLifecycle(): Lifecycle = mLifecycle
 
+}
+
+/**
+ * 默认的布局解析器
+ */
+class DefaultItemViewParser(@LayoutRes val layoutId: Int): ItemViewParser {
+
+    override fun getItemViewType(position: Int) = 0
+
+    override fun getItemLayoutId(viewType: Int) = layoutId
+
+}
+
+/**
+ * 布局解析器
+ */
+interface ItemViewParser {
+
+    fun getItemViewType(position: Int): Int
+
+    fun getItemLayoutId(viewType: Int): Int
 }
