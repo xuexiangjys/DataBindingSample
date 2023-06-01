@@ -31,7 +31,7 @@ import com.xuexiang.xpage.annotation.Page
  * @since 2019-07-08 00:52
  */
 @Page(name = "@{}中表达式使用")
-class ExpressionFragment : DataBindingFragment<FragmentExpressionBinding?, ExpressionState>() {
+class ExpressionFragment : DataBindingFragment<FragmentExpressionBinding, ExpressionState>() {
 
     private val map = mapOf("key1" to "111", "key2" to "222")
 

@@ -39,7 +39,7 @@ import com.xuexiang.xpage.annotation.Page
  * @since 2019-07-08 00:52
  */
 @Page(name = "@BindingAdapter的使用")
-class BindingAdapterFragment : DataBindingFragment<FragmentBindingAdapterBinding?, AdapterState>() {
+class BindingAdapterFragment : DataBindingFragment<FragmentBindingAdapterBinding, AdapterState>() {
 
     override fun getLayoutId() = R.layout.fragment_binding_adapter
 }

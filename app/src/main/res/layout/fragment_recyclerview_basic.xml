@@ -26,22 +26,16 @@
             type="com.xuexiang.databindingsample.fragment.advanced.model.RecyclerViewBasicState" />
     </data>
 
-    <LinearLayout
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/recyclerView"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:orientation="vertical">
+        android:background="@android:color/white"
+        android:overScrollMode="never"
+        app:data="@{state.sampleData}"
+        app:dividerColor="@{@color/custom_divider_color}"
+        app:dividerHeight="@{@dimen/custom_divider_height}"
+        app:itemLayout="@{@layout/databinding_item_simple_list_2}"
+        tools:listitem="@layout/databinding_item_simple_list_2" />
 
-        <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/recyclerView"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:background="@android:color/white"
-            android:overScrollMode="never"
-            app:data="@{state.sampleData}"
-            app:dividerColor="@{@color/custom_divider_color}"
-            app:dividerHeight="@{@dimen/custom_divider_height}"
-            app:itemLayout="@{@layout/databinding_item_simple_list_2}"
-            tools:listitem="@layout/databinding_item_simple_list_2" />
-
-    </LinearLayout>
 </layout>

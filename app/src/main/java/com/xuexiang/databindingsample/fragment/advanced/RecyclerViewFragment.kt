@@ -19,7 +19,9 @@ package com.xuexiang.databindingsample.fragment.advanced
 
 import com.xuexiang.databindingsample.core.BaseContainerFragment
 import com.xuexiang.databindingsample.fragment.advanced.recyclerview.RecyclerViewBasicFragment
+import com.xuexiang.databindingsample.fragment.advanced.recyclerview.RecyclerViewMultipleLayoutsFragment
 import com.xuexiang.databindingsample.fragment.advanced.recyclerview.RecyclerViewRefreshFragment
+import com.xuexiang.databindingsample.fragment.advanced.recyclerview.RecyclerViewRefreshStatusFragment
 import com.xuexiang.xpage.annotation.Page
 
 /**
@@ -35,5 +37,6 @@ class RecyclerViewFragment : BaseContainerFragment() {
         RecyclerViewBasicFragment::class.java,
         RecyclerViewMultipleLayoutsFragment::class.java,
         RecyclerViewRefreshFragment::class.java,
+        RecyclerViewRefreshStatusFragment::class.java,
     )
 }

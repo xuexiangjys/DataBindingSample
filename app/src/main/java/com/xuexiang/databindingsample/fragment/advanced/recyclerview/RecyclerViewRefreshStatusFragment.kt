@@ -17,24 +17,30 @@
 
 package com.xuexiang.databindingsample.fragment.advanced.recyclerview
 
+import androidx.databinding.ViewDataBinding
 import com.xuexiang.databindingsample.R
 import com.xuexiang.databindingsample.core.databinding.DataBindingFragment
-import com.xuexiang.databindingsample.databinding.FragmentRecyclerviewRefreshBinding
-import com.xuexiang.databindingsample.fragment.advanced.model.RecyclerViewRefreshState
+import com.xuexiang.databindingsample.databinding.FragmentRecyclerviewRefreshStatusBinding
+import com.xuexiang.databindingsample.fragment.advanced.model.RecyclerViewRefreshStatusState
 import com.xuexiang.xpage.annotation.Page
 
 /**
- * RecyclerView的刷新和加载更多演示
+ * RecyclerView的刷新状态布局
  *
  * @author xuexiang
- * @since 2023/5/2 16:44
+ * @since 2023/6/1 23:37
  */
-@Page(name = "RecyclerView的刷新和加载更多")
-class RecyclerViewRefreshFragment : DataBindingFragment<FragmentRecyclerviewRefreshBinding, RecyclerViewRefreshState>() {
+@Page(name = "RecyclerView的刷新状态布局\n自动切换状态，包含出错、无网络、暂无数据等")
+class RecyclerViewRefreshStatusFragment :
+    DataBindingFragment<FragmentRecyclerviewRefreshStatusBinding, RecyclerViewRefreshStatusState>() {
 
-    override fun getLayoutId() = R.layout.fragment_recyclerview_refresh
+    override fun getLayoutId() = R.layout.fragment_recyclerview_refresh_status
 
     override fun initViews() {
         binding?.refreshLayout?.autoRefresh()
+    }
+
+    override fun onDataBindingUpdate(binding: ViewDataBinding) {
+        viewModel.setDataBindingProvider(this)
     }
 }

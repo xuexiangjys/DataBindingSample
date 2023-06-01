@@ -505,21 +505,15 @@ fun <T> RecyclerView.setBindingRecyclerViewAdapter(
             type="com.xuexiang.databindingsample.fragment.advanced.model.RecyclerViewBasicState" />
     </data>
 
-    <LinearLayout
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/recyclerView"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:orientation="vertical">
+        android:background="@android:color/white"
+        android:overScrollMode="never"
+        app:data="@{state.sampleData}"
+        app:itemLayout="@{@layout/databinding_item_simple_list_2}" />
 
-        <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/recyclerView"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:background="@android:color/white"
-            android:overScrollMode="never"
-            app:data="@{state.sampleData}"
-            app:itemLayout="@{@layout/databinding_item_simple_list_2}" />
-
-    </LinearLayout>
 </layout>
 ```
 
@@ -850,6 +844,7 @@ fun SmartRefreshLayout.setRefreshLayoutListener(
 （2）在xml中进行数据绑定
 
 ```xml
+
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools">
@@ -861,40 +856,34 @@ fun SmartRefreshLayout.setRefreshLayoutListener(
             type="com.xuexiang.databindingsample.fragment.advanced.model.RecyclerViewRefreshState" />
     </data>
 
-    <LinearLayout
+    <com.scwang.smart.refresh.layout.SmartRefreshLayout
+        android:id="@+id/refreshLayout"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:orientation="vertical">
+        app:loadMoreListener="@{state.loadMoreListener}"
+        app:refreshListener="@{state.refreshListener}">
 
-        <com.scwang.smart.refresh.layout.SmartRefreshLayout
-            android:id="@+id/refreshLayout"
+        <com.scwang.smart.refresh.header.ClassicsHeader
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/recyclerView"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            app:loadMoreListener="@{state.loadMoreListener}"
-            app:refreshListener="@{state.refreshListener}">
+            android:background="@android:color/white"
+            android:overScrollMode="never"
+            app:data="@{state.sampleData}"
+            app:itemLayout="@{@layout/databinding_item_simple_list_2}"
+            app:loadState="@{state.loadState}"
+            tools:listitem="@layout/databinding_item_simple_list_2" />
 
-            <com.scwang.smart.refresh.header.ClassicsHeader
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content" />
+        <com.scwang.smart.refresh.footer.ClassicsFooter
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
 
-            <androidx.recyclerview.widget.RecyclerView
-                android:id="@+id/recyclerView"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:background="@android:color/white"
-                android:overScrollMode="never"
-                app:data="@{state.sampleData}"
-                app:itemLayout="@{@layout/databinding_item_simple_list_2}"
-                app:loadState="@{state.loadState}"
-                tools:listitem="@layout/databinding_item_simple_list_2" />
+    </com.scwang.smart.refresh.layout.SmartRefreshLayout>
 
-            <com.scwang.smart.refresh.footer.ClassicsFooter
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content" />
-
-        </com.scwang.smart.refresh.layout.SmartRefreshLayout>
-
-    </LinearLayout>
 </layout>
 ```
 

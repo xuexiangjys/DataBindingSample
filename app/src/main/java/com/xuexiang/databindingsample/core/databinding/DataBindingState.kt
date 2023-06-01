@@ -34,6 +34,6 @@ abstract class DataBindingState : ViewModel() {
 
     val title = MutableLiveData(this.initTitle())
 
-    abstract fun initTitle() : String
+    abstract fun initTitle(): String
 
 }

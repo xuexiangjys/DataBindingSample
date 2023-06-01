@@ -29,7 +29,7 @@ import com.xuexiang.xpage.annotation.Page
  * @since 2019-07-08 00:52
  */
 @Page(name = "点击事件绑定")
-class ClickBindFragment : DataBindingFragment<FragmentClickBindBinding?, ClickState>() {
+class ClickBindFragment : DataBindingFragment<FragmentClickBindBinding, ClickState>() {
 
     override fun getLayoutId() = R.layout.fragment_click_bind
 }

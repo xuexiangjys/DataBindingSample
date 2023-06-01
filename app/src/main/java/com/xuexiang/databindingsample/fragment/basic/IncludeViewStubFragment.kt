@@ -30,7 +30,7 @@ import com.xuexiang.xpage.annotation.Page
  * @since 2019-07-08 00:52
  */
 @Page(name = "include和viewStub使用")
-class IncludeViewStubFragment : DataBindingFragment<FragmentIncludeViewstubBinding?, IncludeViewStubState>() {
+class IncludeViewStubFragment : DataBindingFragment<FragmentIncludeViewstubBinding, IncludeViewStubState>() {
 
     override fun getLayoutId() = R.layout.fragment_include_viewstub
 

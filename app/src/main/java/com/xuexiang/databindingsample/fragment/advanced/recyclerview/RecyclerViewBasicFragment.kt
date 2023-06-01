@@ -30,7 +30,7 @@ import com.xuexiang.xpage.annotation.Page
  * @since 2023/5/2 16:44
  */
 @Page(name = "RecycleView的基础使用")
-class RecyclerViewBasicFragment : DataBindingFragment<FragmentRecyclerviewBasicBinding?, RecyclerViewBasicState>() {
+class RecyclerViewBasicFragment : DataBindingFragment<FragmentRecyclerviewBasicBinding, RecyclerViewBasicState>() {
 
     override fun getLayoutId() = R.layout.fragment_recyclerview_basic
 }

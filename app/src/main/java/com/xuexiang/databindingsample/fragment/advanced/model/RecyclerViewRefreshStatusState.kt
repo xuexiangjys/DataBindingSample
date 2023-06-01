@@ -19,11 +19,14 @@ package com.xuexiang.databindingsample.fragment.advanced.model
 
 import android.app.Application
 import android.content.Context
+import android.view.View
 import androidx.lifecycle.MutableLiveData
 import com.scwang.smart.refresh.layout.listener.OnLoadMoreListener
 import com.scwang.smart.refresh.layout.listener.OnRefreshListener
-import com.xuexiang.databindingsample.core.databinding.DataBindingPageState
+import com.xuexiang.databindingsample.core.databinding.DataBindingProviderState
+import com.xuexiang.databindingsample.databinding.FragmentRecyclerviewRefreshStatusBinding
 import com.xuexiang.databindingsample.fragment.advanced.adapter.extensions.LoadState
+import com.xuexiang.databindingsample.fragment.advanced.adapter.extensions.Status
 
 /**
  * RecyclerView的刷新和加载更多演示
@@ -31,7 +34,8 @@ import com.xuexiang.databindingsample.fragment.advanced.adapter.extensions.LoadS
  * @author xuexiang
  * @since 2023/4/23 00:20
  */
-class RecyclerViewRefreshState(application: Application) : DataBindingPageState(application) {
+class RecyclerViewRefreshStatusState(application: Application) :
+    DataBindingProviderState<FragmentRecyclerviewRefreshStatusBinding>(application) {
 
     override fun initTitle() = "RecyclerView的刷新和加载更多演示"
 
@@ -39,15 +43,33 @@ class RecyclerViewRefreshState(application: Application) : DataBindingPageState(
 
     val loadState = MutableLiveData(LoadState.DEFAULT)
 
+    val layoutStatus = MutableLiveData(Status.DEFAULT)
+
+    val retryListener = View.OnClickListener {
+        getBinding()?.refreshLayout?.autoRefresh()
+    }
+
     private var pageIndex = 0
 
     val refreshListener = OnRefreshListener { refreshLayout ->
         refreshLayout.layout.postDelayed({
-            pageIndex = 0
-            loadState.value = LoadState.REFRESH
-            sampleData.value = sampleGetData(application)
+            val status = getRefreshStatus()
+            layoutStatus.value = status
+            when (status) {
+                Status.SUCCESS -> {
+                    pageIndex = 0
+                    loadState.value = LoadState.REFRESH
+                    sampleData.value = sampleGetData(application)
+                    refreshLayout.resetNoMoreData()
+                    refreshLayout.setEnableLoadMore(true)
+                }
+                Status.EMPTY,
+                Status.ERROR,
+                Status.NO_NET ->
+                    refreshLayout.setEnableLoadMore(false)
+                else -> {}
+            }
             refreshLayout.finishRefresh()
-            refreshLayout.resetNoMoreData()
         }, 1000)
     }
 
@@ -69,5 +91,18 @@ class RecyclerViewRefreshState(application: Application) : DataBindingPageState(
      */
     private fun sampleGetData(context: Context) =
         getDemoData(context, pageIndex * PAGE_SIZE + 1, PAGE_SIZE * (pageIndex + 1))
+
+    private fun getRefreshStatus(): Status {
+        val status = (Math.random() * 10).toInt()
+        return if (status % 2 == 0) {
+            Status.SUCCESS
+        } else if (status % 3 == 0) {
+            Status.EMPTY
+        } else if (status % 5 == 0) {
+            Status.ERROR
+        } else {
+            Status.NO_NET
+        }
+    }
 }
 

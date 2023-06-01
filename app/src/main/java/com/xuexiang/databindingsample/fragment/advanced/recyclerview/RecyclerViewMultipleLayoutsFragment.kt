@@ -15,7 +15,7 @@
  *
  */
 
-package com.xuexiang.databindingsample.fragment.advanced
+package com.xuexiang.databindingsample.fragment.advanced.recyclerview
 
 import com.xuexiang.databindingsample.R
 import com.xuexiang.databindingsample.core.databinding.DataBindingFragment
@@ -30,7 +30,7 @@ import com.xuexiang.xpage.annotation.Page
  * @since 2023/5/2 16:44
  */
 @Page(name = "RecycleView的多种布局演示")
-class RecyclerViewMultipleLayoutsFragment : DataBindingFragment<FragmentRecyclerviewMultipleLayoutsBinding?, RecyclerViewMultipleLayoutState>() {
+class RecyclerViewMultipleLayoutsFragment : DataBindingFragment<FragmentRecyclerviewMultipleLayoutsBinding, RecyclerViewMultipleLayoutState>() {
 
     override fun getLayoutId() = R.layout.fragment_recyclerview_multiple_layouts
 }
