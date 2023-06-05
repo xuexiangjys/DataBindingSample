@@ -14,27 +14,22 @@
  * limitations under the License.
  *
  */
+package com.xuexiang.databindingsample.fragment.basic
 
-package com.xuexiang.databindingsample.fragment
-
-import com.xuexiang.databindingsample.core.BaseContainerFragment
-import com.xuexiang.databindingsample.fragment.basic.*
+import com.xuexiang.databindingsample.R
+import com.xuexiang.databindingsample.core.databinding.DataBindingFragment
+import com.xuexiang.databindingsample.databinding.FragmentCustomViewBinding
+import com.xuexiang.databindingsample.fragment.basic.model.CustomViewState
 import com.xuexiang.xpage.annotation.Page
 
 /**
- * 基础使用演示
+ * 自定义View绑定演示
  *
  * @author xuexiang
- * @since 2023/4/23 21:20
+ * @since 2023/6/6 02:20
  */
-@Page(name = "基础使用演示")
-class BasicUseFragment : BaseContainerFragment() {
+@Page(name = "自定义View属性绑定")
+class CustomViewFragment : DataBindingFragment<FragmentCustomViewBinding, CustomViewState>() {
 
-    override fun getPagesClasses() = arrayOf(
-        ClickBindFragment::class.java,
-        BindingAdapterFragment::class.java,
-        ExpressionFragment::class.java,
-        IncludeViewStubFragment::class.java,
-        CustomViewFragment::class.java,
-    )
+    override fun getLayoutId() = R.layout.fragment_custom_view
 }

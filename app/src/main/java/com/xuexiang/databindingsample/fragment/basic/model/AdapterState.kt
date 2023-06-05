@@ -59,8 +59,6 @@ fun TextView.setUserInfo(name: String, age: String) {
 fun int2string(integer: Int) = integer.toString()
 
 
-
-
 @BindingAdapter("android:userInfo")
 fun TextView.setUserInfo(user: User) {
     text = "姓名: ${user.name}, 性别: ${user.gender}, 年龄: ${user.age}岁"
