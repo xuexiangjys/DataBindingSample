@@ -17,7 +17,6 @@
 
 package com.xuexiang.databindingsample.fragment.advanced.recyclerview
 
-import androidx.databinding.ViewDataBinding
 import com.xuexiang.databindingsample.R
 import com.xuexiang.databindingsample.core.databinding.DataBindingFragment
 import com.xuexiang.databindingsample.databinding.FragmentRecyclerviewRefreshStatusBinding
@@ -40,7 +39,9 @@ class RecyclerViewRefreshStatusFragment :
         binding?.refreshLayout?.autoRefresh()
     }
 
-    override fun onDataBindingUpdate(binding: ViewDataBinding) {
+    override fun onDataBindingUpdate(binding: FragmentRecyclerviewRefreshStatusBinding) {
+        super.onDataBindingUpdate(binding)
         viewModel.setDataBindingProvider(this)
     }
+
 }

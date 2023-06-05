@@ -16,7 +16,6 @@
  */
 package com.xuexiang.databindingsample.fragment.basic
 
-import androidx.databinding.ViewDataBinding
 import androidx.databinding.library.baseAdapters.BR
 import com.xuexiang.databindingsample.R
 import com.xuexiang.databindingsample.core.databinding.DataBindingFragment
@@ -37,7 +36,7 @@ class ExpressionFragment : DataBindingFragment<FragmentExpressionBinding, Expres
 
     override fun getLayoutId() = R.layout.fragment_expression
 
-    override fun onDataBindingUpdate(binding: ViewDataBinding) {
+    override fun onDataBindingUpdate(binding: FragmentExpressionBinding) {
         binding.setVariable(BR.map, map)
     }
 }

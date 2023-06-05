@@ -49,7 +49,8 @@ import java.lang.reflect.Type
  * @author xuexiang
  * @since 2018/5/25 下午3:44
  */
-abstract class DataBindingFragment<DataBinding : ViewDataBinding, VM : ViewModel> : XPageFragment(), OnDataBindingListener, IDataBindingProvider<DataBinding> {
+abstract class DataBindingFragment<DataBinding : ViewDataBinding, VM : ViewModel> : XPageFragment(),
+    OnDataBindingListener<DataBinding>, IDataBindingProvider<DataBinding> {
 
     private var mMessageLoader: IMessageLoader? = null
 
@@ -80,7 +81,11 @@ abstract class DataBindingFragment<DataBinding : ViewDataBinding, VM : ViewModel
         }
     }
 
-    override fun onCreateContentView(inflater: LayoutInflater, container: ViewGroup?, attachToRoot: Boolean): View? {
+    override fun onCreateContentView(
+        inflater: LayoutInflater,
+        container: ViewGroup?,
+        attachToRoot: Boolean
+    ): View? {
         binding = DataBindingUtil.inflate(inflater, getLayoutId(), container, attachToRoot)
         return binding?.bindViewModel(viewLifecycleOwner, viewModel, this)
     }
@@ -89,7 +94,7 @@ abstract class DataBindingFragment<DataBinding : ViewDataBinding, VM : ViewModel
      * DataBinding更新
      * @param binding DataBinding
      */
-    override fun onDataBindingUpdate(binding: ViewDataBinding) {
+    override fun onDataBindingUpdate(binding: DataBinding) {
 
     }
 
