@@ -15,24 +15,26 @@
  *
  */
 
-package com.xuexiang.databindingsample.fragment
+package com.xuexiang.databindingsample.fragment.advanced
 
 import com.xuexiang.databindingsample.core.BaseContainerFragment
-import com.xuexiang.databindingsample.fragment.advanced.CustomComponentStateFragment
-import com.xuexiang.databindingsample.fragment.advanced.RecyclerViewFragment
+import com.xuexiang.databindingsample.fragment.advanced.custom.CustomViewStateFragment
+import com.xuexiang.databindingsample.fragment.advanced.recyclerview.RecyclerViewBasicFragment
+import com.xuexiang.databindingsample.fragment.advanced.recyclerview.RecyclerViewMultipleLayoutsFragment
+import com.xuexiang.databindingsample.fragment.advanced.recyclerview.RecyclerViewRefreshFragment
+import com.xuexiang.databindingsample.fragment.advanced.recyclerview.RecyclerViewRefreshStatusFragment
 import com.xuexiang.xpage.annotation.Page
 
 /**
- * 进阶使用演示
+ * 自定义组件的state使用
  *
  * @author xuexiang
  * @since 2023/5/2 16:42
  */
-@Page(name = "进阶使用演示")
-class AdvancedUseFragment : BaseContainerFragment() {
+@Page(name = "自定义组件的state使用")
+class CustomComponentStateFragment : BaseContainerFragment() {
 
     override fun getPagesClasses() = arrayOf(
-        RecyclerViewFragment::class.java,
-        CustomComponentStateFragment::class.java
+        CustomViewStateFragment::class.java,
     )
 }

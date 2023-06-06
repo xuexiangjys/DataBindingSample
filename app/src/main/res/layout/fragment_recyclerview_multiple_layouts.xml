@@ -23,7 +23,7 @@
 
         <variable
             name="state"
-            type="com.xuexiang.databindingsample.fragment.advanced.model.RecyclerViewMultipleLayoutState" />
+            type="com.xuexiang.databindingsample.fragment.advanced.recyclerview.model.RecyclerViewMultipleLayoutState" />
     </data>
 
     <androidx.recyclerview.widget.RecyclerView

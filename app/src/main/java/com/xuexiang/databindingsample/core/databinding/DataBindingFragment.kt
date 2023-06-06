@@ -86,7 +86,7 @@ abstract class DataBindingFragment<DataBinding : ViewDataBinding, VM : ViewModel
         container: ViewGroup?,
         attachToRoot: Boolean
     ): View? {
-        binding = DataBindingUtil.inflate(inflater, getLayoutId(), container, attachToRoot)
+        binding = bindView(inflater, getLayoutId(), container, attachToRoot)
         return binding?.bindViewModel(viewLifecycleOwner, viewModel, this)
     }
 

@@ -20,7 +20,7 @@ package com.xuexiang.databindingsample.fragment.advanced.recyclerview
 import com.xuexiang.databindingsample.R
 import com.xuexiang.databindingsample.core.databinding.DataBindingFragment
 import com.xuexiang.databindingsample.databinding.FragmentRecyclerviewMultipleLayoutsBinding
-import com.xuexiang.databindingsample.fragment.advanced.model.RecyclerViewMultipleLayoutState
+import com.xuexiang.databindingsample.fragment.advanced.recyclerview.model.RecyclerViewMultipleLayoutState
 import com.xuexiang.xpage.annotation.Page
 
 /**

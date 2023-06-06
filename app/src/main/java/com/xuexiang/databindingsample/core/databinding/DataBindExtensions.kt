@@ -17,7 +17,9 @@
 
 package com.xuexiang.databindingsample.core.databinding
 
+import android.view.LayoutInflater
 import android.view.View
+import android.view.ViewGroup
 import androidx.activity.ComponentActivity
 import androidx.databinding.DataBindingUtil
 import androidx.databinding.ViewDataBinding
@@ -34,12 +36,12 @@ import androidx.lifecycle.ViewModel
 fun <DataBinding : ViewDataBinding> DataBinding.bindViewModel(
     viewLifecycleOwner: LifecycleOwner,
     viewModel: ViewModel,
-    onBinding: OnDataBindingListener<DataBinding>,
+    onBinding: OnDataBindingListener<DataBinding>? = null,
     variableId: Int = BR.state
 ): View {
     lifecycleOwner = viewLifecycleOwner
     setVariable(variableId, viewModel)
-    onBinding.onDataBindingUpdate(this)
+    onBinding?.onDataBindingUpdate(this)
     return root
 }
 
@@ -50,6 +52,16 @@ fun <DataBinding : ViewDataBinding> bindActivity(
 ): DataBinding = DataBindingUtil.setContentView<DataBinding>(activity, layoutId).apply {
     lifecycleOwner = activity
     onBinding.onDataBindingUpdate(this)
+}
+
+fun <DataBinding : ViewDataBinding> bindView(
+    inflater: LayoutInflater,
+    layoutId: Int,
+    parent: ViewGroup? = null,
+    attachToParent: Boolean = false,
+    onBinding: OnDataBindingListener<DataBinding>? = null,
+): DataBinding = DataBindingUtil.inflate<DataBinding>(inflater, layoutId, parent, attachToParent).apply {
+    onBinding?.onDataBindingUpdate(this)
 }
 
 /**

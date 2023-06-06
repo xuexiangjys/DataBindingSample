@@ -15,23 +15,21 @@
  *
  */
 
-package com.xuexiang.databindingsample.fragment.advanced.model
+package com.xuexiang.databindingsample.fragment.advanced.custom.model
 
 import android.app.Application
 import androidx.lifecycle.MutableLiveData
 import com.xuexiang.databindingsample.core.databinding.DataBindingPageState
 
 /**
- * RecycleView的基础使用演示
+ * 自定义View的state使用演示
  *
  * @author xuexiang
- * @since 2023/4/23 00:20
+ * @since 2023/6/7 01:41
  */
-class RecyclerViewBasicState(application: Application) : DataBindingPageState(application) {
+class CustomViewState(application: Application) : DataBindingPageState(application) {
 
-    override fun initTitle() = "RecycleView的基础使用演示"
-
-    val sampleData = MutableLiveData(getDemoData(application))
+    override fun initTitle() = "自定义View的state使用演示"
 
 }
 

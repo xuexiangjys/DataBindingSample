@@ -15,33 +15,22 @@
  *
  */
 
-package com.xuexiang.databindingsample.fragment.advanced.model
+package com.xuexiang.databindingsample.fragment.advanced.custom
 
-import android.content.Context
 import com.xuexiang.databindingsample.R
+import com.xuexiang.databindingsample.core.databinding.DataBindingFragment
+import com.xuexiang.databindingsample.databinding.FragmentCustomViewStateBinding
+import com.xuexiang.databindingsample.fragment.advanced.custom.model.CustomViewState
+import com.xuexiang.xpage.annotation.Page
 
 /**
- * 演示数据
+ * 自定义View的state使用
  *
  * @author xuexiang
- * @since 2023/5/9 00:38
+ * @since 2023/5/2 16:44
  */
-fun getDemoData(context: Context, from: Int = 1, to: Int = 40): List<SimpleItem> {
-    val list = mutableListOf<SimpleItem>()
-    for (index in from..to) {
-        list.add(
-            SimpleItem(
-                context.getString(R.string.item_example_number_title, index),
-                context.getString(R.string.item_example_number_subtitle, index)
-            )
-        )
-    }
-    return list
+@Page(name = "自定义View的state使用")
+class CustomViewStateFragment : DataBindingFragment<FragmentCustomViewStateBinding, CustomViewState>() {
+
+    override fun getLayoutId() = R.layout.fragment_custom_view_state
 }
-
-data class SimpleItem(
-    val title: String? = "",
-    val subTitle: String? = "",
-)
-
-const val PAGE_SIZE = 10

@@ -20,7 +20,7 @@ package com.xuexiang.databindingsample.fragment.advanced.recyclerview
 import com.xuexiang.databindingsample.R
 import com.xuexiang.databindingsample.core.databinding.DataBindingFragment
 import com.xuexiang.databindingsample.databinding.FragmentRecyclerviewRefreshStatusBinding
-import com.xuexiang.databindingsample.fragment.advanced.model.RecyclerViewRefreshStatusState
+import com.xuexiang.databindingsample.fragment.advanced.recyclerview.model.RecyclerViewRefreshStatusState
 import com.xuexiang.xpage.annotation.Page
 
 /**

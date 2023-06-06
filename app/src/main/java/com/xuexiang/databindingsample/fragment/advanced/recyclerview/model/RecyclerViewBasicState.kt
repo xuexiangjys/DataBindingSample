@@ -15,22 +15,24 @@
  *
  */
 
-package com.xuexiang.databindingsample.fragment.advanced.recyclerview
+package com.xuexiang.databindingsample.fragment.advanced.recyclerview.model
 
-import com.xuexiang.databindingsample.R
-import com.xuexiang.databindingsample.core.databinding.DataBindingFragment
-import com.xuexiang.databindingsample.databinding.FragmentRecyclerviewBasicBinding
-import com.xuexiang.databindingsample.fragment.advanced.recyclerview.model.RecyclerViewBasicState
-import com.xuexiang.xpage.annotation.Page
+import android.app.Application
+import androidx.lifecycle.MutableLiveData
+import com.xuexiang.databindingsample.core.databinding.DataBindingPageState
 
 /**
  * RecycleView的基础使用演示
  *
  * @author xuexiang
- * @since 2023/5/2 16:44
+ * @since 2023/4/23 00:20
  */
-@Page(name = "RecycleView的基础使用")
-class RecyclerViewBasicFragment : DataBindingFragment<FragmentRecyclerviewBasicBinding, RecyclerViewBasicState>() {
+class RecyclerViewBasicState(application: Application) : DataBindingPageState(application) {
 
-    override fun getLayoutId() = R.layout.fragment_recyclerview_basic
+    override fun initTitle() = "RecycleView的基础使用演示"
+
+    val sampleData = MutableLiveData(getDemoData(application))
+
 }
+
+

@@ -23,7 +23,7 @@
 
         <variable
             name="state"
-            type="com.xuexiang.databindingsample.fragment.advanced.model.RecyclerViewRefreshStatusState" />
+            type="com.xuexiang.databindingsample.fragment.advanced.recyclerview.model.RecyclerViewRefreshStatusState" />
     </data>
 
     <com.scwang.smart.refresh.layout.SmartRefreshLayout

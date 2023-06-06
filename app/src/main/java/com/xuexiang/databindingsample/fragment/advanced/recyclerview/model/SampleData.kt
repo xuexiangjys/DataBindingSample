@@ -15,22 +15,33 @@
  *
  */
 
-package com.xuexiang.databindingsample.fragment.advanced.recyclerview
+package com.xuexiang.databindingsample.fragment.advanced.recyclerview.model
 
+import android.content.Context
 import com.xuexiang.databindingsample.R
-import com.xuexiang.databindingsample.core.databinding.DataBindingFragment
-import com.xuexiang.databindingsample.databinding.FragmentRecyclerviewBasicBinding
-import com.xuexiang.databindingsample.fragment.advanced.recyclerview.model.RecyclerViewBasicState
-import com.xuexiang.xpage.annotation.Page
 
 /**
- * RecycleView的基础使用演示
+ * 演示数据
  *
  * @author xuexiang
- * @since 2023/5/2 16:44
+ * @since 2023/5/9 00:38
  */
-@Page(name = "RecycleView的基础使用")
-class RecyclerViewBasicFragment : DataBindingFragment<FragmentRecyclerviewBasicBinding, RecyclerViewBasicState>() {
-
-    override fun getLayoutId() = R.layout.fragment_recyclerview_basic
+fun getDemoData(context: Context, from: Int = 1, to: Int = 40): List<SimpleItem> {
+    val list = mutableListOf<SimpleItem>()
+    for (index in from..to) {
+        list.add(
+            SimpleItem(
+                context.getString(R.string.item_example_number_title, index),
+                context.getString(R.string.item_example_number_subtitle, index)
+            )
+        )
+    }
+    return list
 }
+
+data class SimpleItem(
+    val title: String? = "",
+    val subTitle: String? = "",
+)
+
+const val PAGE_SIZE = 10

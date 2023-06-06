@@ -15,7 +15,7 @@
  *
  */
 
-package com.xuexiang.databindingsample.fragment.advanced.model
+package com.xuexiang.databindingsample.fragment.advanced.recyclerview.model
 
 import android.app.Application
 import androidx.lifecycle.MutableLiveData
