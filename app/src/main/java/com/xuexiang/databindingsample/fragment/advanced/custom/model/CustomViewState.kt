@@ -19,7 +19,11 @@ package com.xuexiang.databindingsample.fragment.advanced.custom.model
 
 import android.app.Application
 import androidx.lifecycle.MutableLiveData
+import com.xuexiang.databindingsample.R
 import com.xuexiang.databindingsample.core.databinding.DataBindingPageState
+import com.xuexiang.databindingsample.widget.OnExpandStateListener
+import com.xuexiang.xui.utils.ResUtils
+import java.util.concurrent.atomic.AtomicInteger
 
 /**
  * 自定义View的state使用演示
@@ -31,6 +35,19 @@ class CustomViewState(application: Application) : DataBindingPageState(applicati
 
     override fun initTitle() = "自定义View的state使用演示"
 
+    val entrys = ResUtils.getStringArray(R.array.display_entry)
+
+    val count = AtomicInteger(0)
+
+    val content = MutableLiveData("")
+
+    val onExpandListener = object : OnExpandStateListener {
+        override fun onExpandChanged(isExpanded: Boolean) {
+            if (isExpanded) {
+                content.value = entrys[count.getAndIncrement() % entrys.size]
+            }
+        }
+    }
 }
 
 

@@ -16,31 +16,33 @@
   -->
 
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto">
+    xmlns:tools="http://schemas.android.com/tools">
 
     <data>
 
         <variable
             name="state"
-            type="com.xuexiang.databindingsample.fragment.advanced.custom.model.CustomViewState" />
+            type="String" />
 
     </data>
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/xui_config_color_gray_9"
         android:orientation="vertical">
 
-        <com.xuexiang.databindingsample.widget.ExpandableViewLayout
+        <View
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            app:evl_title="标题"
-            app:layoutId="@{@layout/include_text_display}"
-            app:onExpandListener="@{state.onExpandListener}"
-            app:state="@{state.content}" />
+            android:layout_height="2dp"
+            android:background="@color/xui_config_color_black" />
 
+        <TextView
+            style="@style/TextStyle.Content"
+            android:padding="16dp"
+            android:singleLine="false"
+            android:text="@{state}"
+            tools:text="xxxxxxx" />
 
     </LinearLayout>
-
-
 </layout>

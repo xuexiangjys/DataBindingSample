@@ -32,4 +32,9 @@
         <attr name="password" format="boolean" />
     </declare-styleable>
 
+    <declare-styleable name="ExpandableViewLayout">
+        <attr format="string" name="evl_title"/>
+        <attr format="boolean" name="evl_show_arrow"/>
+    </declare-styleable>
+
 </resources>
