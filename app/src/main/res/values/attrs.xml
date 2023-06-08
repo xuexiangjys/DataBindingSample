@@ -37,4 +37,8 @@
         <attr format="boolean" name="evl_show_arrow"/>
     </declare-styleable>
 
+    <declare-styleable name="SelectValueLayout">
+        <attr format="string" name="svl_title"/>
+    </declare-styleable>
+
 </resources>

@@ -15,24 +15,22 @@
  *
  */
 
-package com.xuexiang.databindingsample.fragment.advanced
+package com.xuexiang.databindingsample.fragment.advanced.custom
 
-import com.xuexiang.databindingsample.core.BaseContainerFragment
-import com.xuexiang.databindingsample.fragment.advanced.custom.CustomDialogStateFragment
-import com.xuexiang.databindingsample.fragment.advanced.custom.CustomViewStateFragment
+import com.xuexiang.databindingsample.R
+import com.xuexiang.databindingsample.core.databinding.DataBindingFragment
+import com.xuexiang.databindingsample.databinding.FragmentCustomDialogStateBinding
+import com.xuexiang.databindingsample.fragment.advanced.custom.model.CustomDialogState
 import com.xuexiang.xpage.annotation.Page
 
 /**
- * 自定义组件的state使用
+ * 自定义View的state使用
  *
  * @author xuexiang
- * @since 2023/5/2 16:42
+ * @since 2023/5/2 16:44
  */
-@Page(name = "自定义组件的state使用")
-class CustomComponentStateFragment : BaseContainerFragment() {
+@Page(name = "自定义Dialog的state使用")
+class CustomDialogStateFragment : DataBindingFragment<FragmentCustomDialogStateBinding, CustomDialogState>() {
 
-    override fun getPagesClasses() = arrayOf(
-        CustomViewStateFragment::class.java,
-        CustomDialogStateFragment::class.java
-    )
+    override fun getLayoutId() = R.layout.fragment_custom_dialog_state
 }

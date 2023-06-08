@@ -15,24 +15,29 @@
   ~
   -->
 
-<resources>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools">
 
-    <string-array name="display_entry">
-        <item>@string/lorem_ipsum1</item>
-        <item>@string/lorem_ipsum2</item>
-        <item>@string/lorem_ipsum3</item>
-    </string-array>
+    <data>
 
-    <string-array name="tags_values">
-        <item>Android</item>
-        <item>Javascript</item>
-        <item>React Native</item>
-        <item>Kotlin</item>
-        <item>C++</item>
-        <item>C#</item>
-        <item>Object-C</item>
-        <item>PHP</item>
-        <item>Ruby</item>
-    </string-array>
+        <variable
+            name="item"
+            type="String" />
 
-</resources>
+    </data>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="?selectableItemBackground"
+        android:orientation="vertical">
+
+        <TextView
+            style="@style/TextStyle.Content"
+            android:layout_width="match_parent"
+            android:layout_marginVertical="8dp"
+            android:text="@{item}"
+            tools:text="Kotlin" />
+
+    </LinearLayout>
+</layout>

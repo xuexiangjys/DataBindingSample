@@ -35,7 +35,7 @@ import androidx.lifecycle.ViewModel
  */
 fun <DataBinding : ViewDataBinding> DataBinding.bindViewModel(
     viewLifecycleOwner: LifecycleOwner,
-    viewModel: ViewModel,
+    viewModel: Any?,
     onBinding: OnDataBindingListener<DataBinding>? = null,
     variableId: Int = BR.state
 ): View {
