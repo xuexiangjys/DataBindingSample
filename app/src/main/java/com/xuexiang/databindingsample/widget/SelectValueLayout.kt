@@ -23,8 +23,8 @@ import android.content.DialogInterface
 import android.util.AttributeSet
 import android.view.LayoutInflater
 import android.view.View
-import androidx.appcompat.app.AppCompatActivity
 import androidx.constraintlayout.widget.ConstraintLayout
+import androidx.fragment.app.FragmentActivity
 import androidx.fragment.app.FragmentManager
 import com.xuexiang.databindingsample.R
 import com.xuexiang.databindingsample.databinding.LayoutSelectValueBinding
@@ -102,7 +102,7 @@ class SelectValueLayout constructor(
     }
 
     private fun getFragmentManager(context: Context): FragmentManager? {
-        if (context is AppCompatActivity) {
+        if (context is FragmentActivity) {
             return context.supportFragmentManager
         }
         if (context is ContextWrapper) {
