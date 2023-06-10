@@ -17,6 +17,7 @@
 
 package com.xuexiang.databindingsample.widget
 
+import android.content.DialogInterface
 import android.graphics.Color
 import android.graphics.drawable.ColorDrawable
 import android.os.Bundle
@@ -40,6 +41,8 @@ import com.xuexiang.xui.utils.StatusBarUtils
 class SelectDialog(@LayoutRes val layoutId: Int, val state: Any?) : DialogFragment() {
 
     var binding: ViewDataBinding? = null
+
+    var onDismissListener: DialogInterface.OnDismissListener?= null
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -77,6 +80,12 @@ class SelectDialog(@LayoutRes val layoutId: Int, val state: Any?) : DialogFragme
         } catch (_: Exception) {
         }
     }
+
+    override fun onDismiss(dialog: DialogInterface) {
+        super.onDismiss(dialog)
+        onDismissListener?.onDismiss(dialog)
+    }
+
 
     override fun onDestroyView() {
         binding?.unbind()

@@ -18,11 +18,14 @@
 package com.xuexiang.databindingsample.widget
 
 import android.content.Context
+import android.content.ContextWrapper
+import android.content.DialogInterface
 import android.util.AttributeSet
 import android.view.LayoutInflater
 import android.view.View
 import androidx.appcompat.app.AppCompatActivity
 import androidx.constraintlayout.widget.ConstraintLayout
+import androidx.fragment.app.FragmentManager
 import com.xuexiang.databindingsample.R
 import com.xuexiang.databindingsample.databinding.LayoutSelectValueBinding
 
@@ -37,9 +40,11 @@ class SelectValueLayout constructor(
     attrs: AttributeSet?,
 ) : ConstraintLayout(context, attrs) {
 
+    private var TAG = this.javaClass.simpleName
+
     private var mBinding: LayoutSelectValueBinding
 
-    private val mSelectDialog by lazy { SelectDialog(layoutId, state) }
+    private var mDialog: SelectDialog? = null
 
     var title: CharSequence?
         get() {
@@ -78,16 +83,32 @@ class SelectValueLayout constructor(
             attributes.recycle()
         }
         setOnClickListener {
-            val tag = this@SelectValueLayout.javaClass.simpleName
-            (context as? AppCompatActivity)?.supportFragmentManager?.apply {
-                executePendingTransactions()
-                if (mSelectDialog.isAdded || findFragmentByTag(tag) != null) {
-                    beginTransaction().remove(mSelectDialog).commitNowAllowingStateLoss()
+            showDialog(context)
+        }
+    }
+
+    private fun showDialog(context: Context) {
+        getFragmentManager(context)?.run {
+            if (mDialog == null) {
+                mDialog = SelectDialog(layoutId, state)
+            }
+            mDialog?.let { dialog ->
+                dialog.onDismissListener = DialogInterface.OnDismissListener {
+                    mDialog = null
                 }
-            }?.run {
-                mSelectDialog.show(this, tag)
+                dialog.show(this, TAG)
             }
         }
+    }
+
+    private fun getFragmentManager(context: Context): FragmentManager? {
+        if (context is AppCompatActivity) {
+            return context.supportFragmentManager
+        }
+        if (context is ContextWrapper) {
+            return getFragmentManager(context.baseContext)
+        }
+        return null
     }
 
     override fun onDetachedFromWindow() {
@@ -96,7 +117,7 @@ class SelectValueLayout constructor(
     }
 
     private fun dismissDialog() {
-        mSelectDialog.dismissAllowingStateLoss()
+        mDialog?.dismissAllowingStateLoss()
     }
 
 }
