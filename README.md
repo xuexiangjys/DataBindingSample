@@ -119,6 +119,35 @@ fun TextView.setTextContent(title: String, size: Int) {
 }
 ```
 
+
+**【特别注意事项⚠️】**
+
+很多时候，很多新手在写DataBinding的时候，经常会漏掉`"@{}"`，尤其是用数字和Boolean类型的值时。就比如我上面设置的`customSize`属性，类型值是Int型，正确的写法应该是下面这样：
+
+* 正确的写法
+
+```xml
+<TextView
+    style="@style/TextStyle.Title"
+    android:layout_marginTop="16dp"
+    app:customSize="@{25}"
+    app:customTitle="@{state.title}" />
+```
+
+* 常见错误的写法
+
+```xml
+<TextView
+    style="@style/TextStyle.Title"
+    android:layout_marginTop="16dp"
+    app:customSize="25"
+    app:customTitle="@{state.title}" />
+```
+
+上述错误的写法，运行后编译器会报错`AAPT: error: attribute customSize (aka com.xuexiang.databindingsample:customSize) not found.`。
+
+所以当我们写DataBinding的时候，如果出现`AAPT: error: attribute xxx (aka com.aa.bb:xxx) not found.`，十有八九是你赋值漏掉了`"@{}"`。
+
 2. 单例类+@JvmStatic注解
 
 ```kotlin
@@ -291,7 +320,7 @@ object AppUtils {
     android:text="@{state.user.address != null ?  state.user.address : `默认地址`)}"/>
 ```
 
-### 5.include 和 viewStub
+### 5.include 和 ViewStub
 
 在主布局文件中将相应的变量传递给 include 布局，需使用自定义的 bind 命名空间将变量传递给 （include/ViewStub）， 从而使两个布局文件之间共享同一个变量。
 
@@ -330,7 +359,26 @@ object AppUtils {
 </layout>
 ```
 
-2. viewStub
+**【⚠️特别注意事项⚠️️】**
+
+这里需要注意的是，include标签，如果设置了`layout_width`和`layout_height`这两个属性，那么布局就是由include外层设置的layout属性生效，内层属性不生效。
+
+如果include标签没有设置`layout_width`和`layout_height`这两个属性，那么就是由include引用的布局内层设置的layout属性生效。
+
+举个例子，如果把👆设置的include改成下面这样：
+
+```xml
+<include
+    layout="@layout/include_user_info"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginTop="24dp"
+    app:user="@{state.user}" />
+```
+
+那么`@layout/include_user_info`加载的布局，距离上部的距离就是24dp，而不是16dp。
+
+2. ViewStub
 
 ```xml
 <ViewStub
