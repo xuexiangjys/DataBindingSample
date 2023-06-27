@@ -23,6 +23,8 @@ import android.view.ViewGroup
 import androidx.databinding.DataBindingUtil
 import androidx.databinding.ViewDataBinding
 import androidx.recyclerview.widget.RecyclerView
+import com.xuexiang.xui.logs.UILog
+import java.util.concurrent.TimeUnit
 
 /**
  * 供绑定的RecyclerView.Adapter
@@ -39,8 +41,11 @@ open class BindingRecyclerViewAdapter<T>(
 ) : RecyclerView.Adapter<BindingViewHolder<T>>() {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): BindingViewHolder<T> {
+        val startNanos = System.nanoTime()
         val holder = processCreateViewHolder(parent, viewType)
         initViewHolder(holder)
+        val cost = TimeUnit.NANOSECONDS.toMillis(System.nanoTime() - startNanos)
+        UILog.dTag(TAG, "onCreateViewHolder cost:$cost ms")
         return holder
     }
 
@@ -122,5 +127,9 @@ open class BindingRecyclerViewAdapter<T>(
     override fun onViewRecycled(holder: BindingViewHolder<T>) {
         holder.binding.lifecycleOwner = null
         super.onViewRecycled(holder)
+    }
+
+    companion object {
+        private const val TAG = "BindingRecyclerViewAdapter"
     }
 }

@@ -17,6 +17,7 @@
 
 package com.xuexiang.databindingsample.fragment.advanced.adapter
 
+import android.util.SparseIntArray
 import android.view.ViewGroup
 import androidx.databinding.DataBindingUtil
 import androidx.databinding.ViewDataBinding
@@ -36,14 +37,31 @@ class BindingPreloadRecyclerViewAdapter<T>(
     selectedPosition: Int?,
     onItemClickListener: OnItemClickListener<T>?,
     onItemLongClickListener: OnItemLongClickListener<T>?,
-) : BindingRecyclerViewAdapter<T>(itemViewParser, dataSource, selectedPosition, onItemClickListener, onItemLongClickListener) {
+) : BindingRecyclerViewAdapter<T>(
+    itemViewParser,
+    dataSource,
+    selectedPosition,
+    onItemClickListener,
+    onItemLongClickListener
+) {
+
+    private val configMap = SparseIntArray()
 
     init {
-        getPreloadHelper().preload(recyclerView, itemViewParser.getItemLayoutId(0))
+        itemViewParser.getPreloadConfigs().forEach { config ->
+            configMap.append(config.layoutId, config.maxCount)
+            getPreloadHelper().preload(recyclerView, config.layoutId, config.maxCount)
+        }
     }
 
     override fun inflateView(parent: ViewGroup, layoutId: Int): ViewDataBinding {
-        return DataBindingUtil.bind(getPreloadHelper().getView(parent, layoutId)) ?: super.inflateView(parent, layoutId)
+        return DataBindingUtil.bind(
+            getPreloadHelper().getView(
+                parent,
+                layoutId,
+                configMap.get(layoutId)
+            )
+        ) ?: super.inflateView(parent, layoutId)
     }
 
     private object InstanceHolder {
@@ -53,5 +71,4 @@ class BindingPreloadRecyclerViewAdapter<T>(
     companion object {
         fun getPreloadHelper() = InstanceHolder.sInstance
     }
-
 }

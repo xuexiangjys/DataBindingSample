@@ -19,6 +19,7 @@ package com.xuexiang.databindingsample.fragment.advanced.preload.core
 import android.util.SparseArray
 import android.view.View
 import android.view.ViewGroup
+import com.xuexiang.databindingsample.fragment.advanced.preload.core.PreInflateHelper.Companion.DEFAULT_PRELOAD_COUNT
 import com.xuexiang.xui.logs.UILog
 import java.lang.ref.SoftReference
 import java.util.*
@@ -165,3 +166,8 @@ class PreInflateHelper(var layoutInflater: ILayoutInflater = DefaultLayoutInflat
         const val DEFAULT_PRELOAD_COUNT = 5
     }
 }
+
+data class PreloadConfig(
+    val layoutId: Int,
+    val maxCount: Int = DEFAULT_PRELOAD_COUNT
+)

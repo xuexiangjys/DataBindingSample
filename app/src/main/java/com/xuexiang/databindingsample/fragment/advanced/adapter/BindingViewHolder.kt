@@ -24,6 +24,7 @@ import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.LifecycleRegistry
 import androidx.recyclerview.widget.RecyclerView
 import com.xuexiang.databindingsample.BR
+import com.xuexiang.databindingsample.fragment.advanced.preload.core.PreloadConfig
 
 /**
  *
@@ -66,6 +67,8 @@ class DefaultItemViewParser(@LayoutRes val layoutId: Int): ItemViewParser {
 
     override fun getItemLayoutId(viewType: Int) = layoutId
 
+    override fun getPreloadConfigs() = arrayListOf(PreloadConfig(layoutId))
+
 }
 
 /**
@@ -76,4 +79,6 @@ interface ItemViewParser {
     fun getItemViewType(position: Int): Int
 
     fun getItemLayoutId(viewType: Int): Int
+
+    fun getPreloadConfigs() = emptyList<PreloadConfig>()
 }

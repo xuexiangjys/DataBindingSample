@@ -33,13 +33,14 @@ import kotlin.math.roundToInt
  * @since 2023/5/2 16:53
  */
 @BindingAdapter(
-    value = ["data", "itemLayout", "itemViewParser", "loadState", "dividerHeight", "dividerColor", "selectedPosition", "itemClick", "itemLongClick"],
+    value = ["data", "itemLayout", "itemViewParser", "enablePreload", "loadState", "dividerHeight", "dividerColor", "selectedPosition", "itemClick", "itemLongClick"],
     requireAll = false
 )
 fun <T> RecyclerView.setBindingRecyclerViewAdapter(
     data: List<T>?,
     @LayoutRes layoutId: Int?,
     itemViewParser: ItemViewParser?,
+    enablePreload: Boolean = false,
     loadState: LoadState? = LoadState.DEFAULT,
     dividerHeight: Float? = null,
     @ColorInt dividerColor: Int? = null,
@@ -51,13 +52,25 @@ fun <T> RecyclerView.setBindingRecyclerViewAdapter(
     require(layoutId != null || itemViewParser != null) { "app:itemLayout and app:itemViewParser argument need a parameter that is not null!" }
 
     if (adapter == null) {
-        adapter = BindingRecyclerViewAdapter(
-            itemViewParser ?: DefaultItemViewParser(layoutId!!),
-            data.toMutableList(),
-            selectedPosition,
-            onItemClickListener,
-            onItemLongClickListener
-        )
+        val parser = itemViewParser ?: DefaultItemViewParser(layoutId!!)
+        adapter = if (enablePreload) {
+            BindingPreloadRecyclerViewAdapter(
+                this,
+                parser,
+                data.toMutableList(),
+                selectedPosition,
+                onItemClickListener,
+                onItemLongClickListener
+            )
+        } else {
+            BindingRecyclerViewAdapter(
+                parser,
+                data.toMutableList(),
+                selectedPosition,
+                onItemClickListener,
+                onItemLongClickListener
+            )
+        }
         layoutManager = XLinearLayoutManager(context)
         setDividerStyle(dividerHeight, dividerColor)
     } else {

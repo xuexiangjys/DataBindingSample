@@ -14,30 +14,24 @@
  * limitations under the License.
  *
  */
-
 package com.xuexiang.databindingsample.fragment.advanced
 
 import com.xuexiang.databindingsample.core.BaseContainerFragment
-import com.xuexiang.databindingsample.fragment.advanced.recyclerview.RecyclerViewBasicFragment
-import com.xuexiang.databindingsample.fragment.advanced.recyclerview.RecyclerViewMultipleLayoutsFragment
-import com.xuexiang.databindingsample.fragment.advanced.recyclerview.RecyclerViewRefreshFragment
-import com.xuexiang.databindingsample.fragment.advanced.recyclerview.RecyclerViewRefreshStatusFragment
+import com.xuexiang.databindingsample.fragment.advanced.preload.AfterOptimizeFragment
+import com.xuexiang.databindingsample.fragment.advanced.preload.BeforeOptimizeFragment
 import com.xuexiang.xpage.annotation.Page
 
 /**
- * 简化RecycleView的使用演示
+ * ViewHolder异步预加载优化演示
  *
  * @author xuexiang
- * @since 2023/5/2 16:42
+ * @since 6/20/23 12:33 AM
  */
-@Page(name = "简化RecycleView的使用")
-class RecyclerViewFragment : BaseContainerFragment() {
+@Page(name = "ViewHolder异步预加载优化")
+class PreloadViewHolderFragment : BaseContainerFragment() {
 
     override fun getPagesClasses() = arrayOf(
-        RecyclerViewBasicFragment::class.java,
-        RecyclerViewMultipleLayoutsFragment::class.java,
-        RecyclerViewRefreshFragment::class.java,
-        RecyclerViewRefreshStatusFragment::class.java,
-        PreloadViewHolderFragment::class.java
+        BeforeOptimizeFragment::class.java,
+        AfterOptimizeFragment::class.java,
     )
 }
