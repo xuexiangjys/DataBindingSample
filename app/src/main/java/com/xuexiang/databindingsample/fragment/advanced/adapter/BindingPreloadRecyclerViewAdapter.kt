@@ -22,6 +22,8 @@ import android.view.ViewGroup
 import androidx.databinding.DataBindingUtil
 import androidx.databinding.ViewDataBinding
 import androidx.recyclerview.widget.RecyclerView
+import com.xuexiang.databindingsample.fragment.advanced.adapter.mock.MockLongTimeLayoutInflater
+import com.xuexiang.databindingsample.fragment.advanced.preload.core.DefaultLayoutInflater
 import com.xuexiang.databindingsample.fragment.advanced.preload.core.PreInflateHelper
 
 /**
@@ -37,17 +39,24 @@ class BindingPreloadRecyclerViewAdapter<T>(
     selectedPosition: Int?,
     onItemClickListener: OnItemClickListener<T>?,
     onItemLongClickListener: OnItemLongClickListener<T>?,
+    isMock: Boolean = false
 ) : BindingRecyclerViewAdapter<T>(
     itemViewParser,
     dataSource,
     selectedPosition,
     onItemClickListener,
-    onItemLongClickListener
+    onItemLongClickListener,
 ) {
 
     private val configMap = SparseIntArray()
 
     init {
+        if (isMock) {
+            getPreloadHelper().layoutInflater = MockLongTimeLayoutInflater.get()
+        } else {
+            getPreloadHelper().layoutInflater = DefaultLayoutInflater.get()
+        }
+
         itemViewParser.getPreloadConfigs().forEach { config ->
             configMap.append(config.layoutId, config.maxCount)
             getPreloadHelper().preload(recyclerView, config.layoutId, config.maxCount)

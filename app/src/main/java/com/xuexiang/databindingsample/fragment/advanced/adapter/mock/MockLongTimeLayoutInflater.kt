@@ -14,37 +14,29 @@
  * limitations under the License.
  *
  */
-package com.xuexiang.databindingsample.fragment.advanced.preload.core
+package com.xuexiang.databindingsample.fragment.advanced.adapter.mock
 
-import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.appcompat.view.ContextThemeWrapper
-import androidx.asynclayoutinflater.view.AsyncLayoutInflater
+import com.xuexiang.databindingsample.fragment.advanced.adapter.mock.InflateUtils.mockLongTimeLoad
 import com.xuexiang.databindingsample.fragment.advanced.preload.core.PreInflateHelper.ILayoutInflater
 import com.xuexiang.databindingsample.fragment.advanced.preload.core.PreInflateHelper.InflateCallback
 
-class DefaultLayoutInflater private constructor() : ILayoutInflater {
+class MockLongTimeLayoutInflater private constructor() : ILayoutInflater {
 
-    private var mInflater: AsyncLayoutInflater? = null
-
-    private object InstanceHolder {
-        val sInstance = DefaultLayoutInflater()
-    }
+    private var mInflater: MockLongTimeAsyncLayoutInflater? = null
 
     override fun asyncInflateView(parent: ViewGroup, layoutId: Int, callback: InflateCallback?) {
         if (mInflater == null) {
-            mInflater = AsyncLayoutInflater(
+            mInflater = MockLongTimeAsyncLayoutInflater(
                 ContextThemeWrapper(
                     parent.context.applicationContext,
                     parent.context.theme
                 )
             )
         }
-        mInflater?.inflate(
-            layoutId,
-            parent
-        ) { view: View?, resId: Int, _: ViewGroup? ->
+        mInflater!!.inflate(layoutId, parent) { view, resId, _ ->
             callback?.onInflateFinished(
                 resId,
                 view
@@ -53,7 +45,11 @@ class DefaultLayoutInflater private constructor() : ILayoutInflater {
     }
 
     override fun inflateView(parent: ViewGroup, layoutId: Int): View {
-        return LayoutInflater.from(parent.context).inflate(layoutId, parent, false)
+        return mockLongTimeLoad(parent, layoutId)
+    }
+
+    private object InstanceHolder {
+        val sInstance = MockLongTimeLayoutInflater()
     }
 
     companion object {

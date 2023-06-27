@@ -33,7 +33,7 @@ import kotlin.math.roundToInt
  * @since 2023/5/2 16:53
  */
 @BindingAdapter(
-    value = ["data", "itemLayout", "itemViewParser", "enablePreload", "loadState", "dividerHeight", "dividerColor", "selectedPosition", "itemClick", "itemLongClick"],
+    value = ["data", "itemLayout", "itemViewParser", "enablePreload", "loadState", "dividerHeight", "dividerColor", "selectedPosition", "itemClick", "itemLongClick", "isMock"],
     requireAll = false
 )
 fun <T> RecyclerView.setBindingRecyclerViewAdapter(
@@ -47,6 +47,7 @@ fun <T> RecyclerView.setBindingRecyclerViewAdapter(
     selectedPosition: Int? = null,
     onItemClickListener: OnItemClickListener<T>? = null,
     onItemLongClickListener: OnItemLongClickListener<T>? = null,
+    isMock: Boolean = false
 ) {
     requireNotNull(data) { "app:data argument cannot be null!" }
     require(layoutId != null || itemViewParser != null) { "app:itemLayout and app:itemViewParser argument need a parameter that is not null!" }
@@ -60,7 +61,8 @@ fun <T> RecyclerView.setBindingRecyclerViewAdapter(
                 data.toMutableList(),
                 selectedPosition,
                 onItemClickListener,
-                onItemLongClickListener
+                onItemLongClickListener,
+                isMock
             )
         } else {
             BindingRecyclerViewAdapter(
@@ -68,7 +70,8 @@ fun <T> RecyclerView.setBindingRecyclerViewAdapter(
                 data.toMutableList(),
                 selectedPosition,
                 onItemClickListener,
-                onItemLongClickListener
+                onItemLongClickListener,
+                isMock
             )
         }
         layoutManager = XLinearLayoutManager(context)

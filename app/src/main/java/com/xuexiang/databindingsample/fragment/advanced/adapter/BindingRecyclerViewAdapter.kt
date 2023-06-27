@@ -23,6 +23,7 @@ import android.view.ViewGroup
 import androidx.databinding.DataBindingUtil
 import androidx.databinding.ViewDataBinding
 import androidx.recyclerview.widget.RecyclerView
+import com.xuexiang.databindingsample.fragment.advanced.adapter.mock.InflateUtils
 import com.xuexiang.xui.logs.UILog
 import java.util.concurrent.TimeUnit
 
@@ -38,6 +39,7 @@ open class BindingRecyclerViewAdapter<T>(
     private var selectedPosition: Int?,
     private var onItemClickListener: OnItemClickListener<T>?,
     private var onItemLongClickListener: OnItemLongClickListener<T>?,
+    private val isMock: Boolean = false
 ) : RecyclerView.Adapter<BindingViewHolder<T>>() {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): BindingViewHolder<T> {
@@ -62,12 +64,17 @@ open class BindingRecyclerViewAdapter<T>(
     open fun inflateView(
         parent: ViewGroup,
         layoutId: Int
-    ): ViewDataBinding = DataBindingUtil.inflate(
-        LayoutInflater.from(parent.context),
-        layoutId,
-        parent,
-        false
-    )
+    ): ViewDataBinding =
+        if (isMock) {
+            DataBindingUtil.bind(InflateUtils.mockLongTimeLoad(parent, layoutId))!!
+        } else {
+            DataBindingUtil.inflate(
+                LayoutInflater.from(parent.context),
+                layoutId,
+                parent,
+                false
+            )
+        }
 
     private fun initViewHolder(holder: BindingViewHolder<T>) {
         onItemClickListener?.run {

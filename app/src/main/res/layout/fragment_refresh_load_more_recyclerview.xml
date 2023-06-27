@@ -42,6 +42,7 @@
             android:overScrollMode="never"
             app:data="@{state.data}"
             app:enablePreload="@{state.enablePreload}"
+            app:isMock="@{true}"
             app:itemLayout="@{@layout/databinding_item_news_card_view_list}"
             app:loadState="@{state.loadState}" />
 
