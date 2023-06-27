@@ -30,36 +30,39 @@ import androidx.recyclerview.widget.RecyclerView
  * @author xuexiang
  * @since 2023/5/4 23:20
  */
-class BindingRecyclerViewAdapter<T>(
+open class BindingRecyclerViewAdapter<T>(
     private val itemViewParser: ItemViewParser,
-    var dataSource: MutableList<T>,
-    var selectedPosition: Int?,
-    var onItemClickListener: OnItemClickListener<T>?,
-    var onItemLongClickListener: OnItemLongClickListener<T>?,
+    private var dataSource: MutableList<T>,
+    private var selectedPosition: Int?,
+    private var onItemClickListener: OnItemClickListener<T>?,
+    private var onItemLongClickListener: OnItemLongClickListener<T>?,
 ) : RecyclerView.Adapter<BindingViewHolder<T>>() {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): BindingViewHolder<T> {
-        val layoutInflater = LayoutInflater.from(parent.context)
-        val holder = createViewHolder(layoutInflater, parent, viewType)
+        val holder = processCreateViewHolder(parent, viewType)
         initViewHolder(holder)
         return holder
     }
 
-    private fun createViewHolder(
-        layoutInflater: LayoutInflater,
+    private fun processCreateViewHolder(
         parent: ViewGroup,
         viewType: Int
     ): BindingViewHolder<T> {
-        val binding = DataBindingUtil.inflate<ViewDataBinding>(
-            layoutInflater,
-            itemViewParser.getItemLayoutId(viewType),
-            parent,
-            false
-        )
+        val binding = inflateView(parent, itemViewParser.getItemLayoutId(viewType))
         val holder = BindingViewHolder<T>(binding)
         binding.lifecycleOwner = holder
         return holder
     }
+
+    open fun inflateView(
+        parent: ViewGroup,
+        layoutId: Int
+    ): ViewDataBinding = DataBindingUtil.inflate(
+        LayoutInflater.from(parent.context),
+        layoutId,
+        parent,
+        false
+    )
 
     private fun initViewHolder(holder: BindingViewHolder<T>) {
         onItemClickListener?.run {
