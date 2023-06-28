@@ -16,54 +16,35 @@
   -->
 
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto">
+    xmlns:tools="http://schemas.android.com/tools">
 
     <data>
 
         <variable
             name="state"
-            type="com.xuexiang.databindingsample.fragment.basic.model.IncludeViewStubState" />
+            type="com.xuexiang.databindingsample.fragment.basic.model.CombineLiveDataState" />
+
 
     </data>
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_margin="16dp"
-        android:orientation="vertical">
+        android:orientation="vertical"
+        android:padding="16dp">
 
         <TextView
-            style="@style/TextStyle.Title"
-            android:text="@{state.title}" />
-
-        <TextView
-            style="@style/TextStyle.Title"
-            android:layout_marginTop="16dp"
-            android:text="include:" />
-
-        <include
-            android:id="@+id/include_layout"
-            layout="@layout/include_user_info"
-            app:user="@{state.user}" />
-
-        <TextView
-            style="@style/TextStyle.Title"
-            android:text="ViewStub:" />
-
-        <ViewStub
-            android:id="@+id/user_info"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="16dp"
-            android:layout="@layout/viewstub_user_info"
-            app:info="@{state.user}" />
+            style="@style/TextStyle.Content"
+            android:text="@{state.userInfo}"
+            tools:text="小明今年10岁了！" />
 
         <Button
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="16dp"
-            android:onClick="@{state.onClickLoadViewStub}"
-            android:text="ViewStub加载" />
+            android:onClick="@{() -> state.onAgeChanged()}"
+            android:text="年龄变化" />
+
 
     </LinearLayout>
 </layout>

@@ -36,5 +36,6 @@ class BasicUseFragment : BaseContainerFragment() {
         ExpressionFragment::class.java,
         IncludeViewStubFragment::class.java,
         CustomViewFragment::class.java,
+        CombineLiveDataFragment::class.java
     )
 }

@@ -16,28 +16,22 @@
  */
 package com.xuexiang.databindingsample.fragment.basic
 
-import android.view.View
 import com.xuexiang.databindingsample.R
 import com.xuexiang.databindingsample.core.databinding.DataBindingFragment
-import com.xuexiang.databindingsample.databinding.FragmentIncludeViewstubBinding
-import com.xuexiang.databindingsample.fragment.basic.model.IncludeViewStubState
+import com.xuexiang.databindingsample.databinding.FragmentClickBindBinding
+import com.xuexiang.databindingsample.databinding.FragmentCombineLivedataBinding
+import com.xuexiang.databindingsample.fragment.basic.model.ClickState
+import com.xuexiang.databindingsample.fragment.basic.model.CombineLiveDataState
 import com.xuexiang.xpage.annotation.Page
 
 /**
- * DataBinding中include和viewStub的使用
+ * 组合LiveData的使用演示
  *
  * @author xuexiang
  * @since 2019-07-08 00:52
  */
-@Page(name = "include和viewStub使用")
-class IncludeViewStubFragment : DataBindingFragment<FragmentIncludeViewstubBinding, IncludeViewStubState>() {
+@Page(name = "组合LiveData的使用")
+class CombineLiveDataFragment : DataBindingFragment<FragmentCombineLivedataBinding, CombineLiveDataState>() {
 
-    override fun getLayoutId() = R.layout.fragment_include_viewstub
-
-    override fun initViews() {
-//        binding?.includeLayout?.tvTitle?.text = "用户信息"
-        viewModel.onClickLoadViewStub = View.OnClickListener {
-            binding?.userInfo?.viewStub?.inflate()
-        }
-    }
+    override fun getLayoutId() = R.layout.fragment_combine_livedata
 }

@@ -32,6 +32,7 @@
         android:orientation="vertical">
 
         <TextView
+            android:id="@+id/tv_title"
             style="@style/TextStyle.Content"
             android:userInfo="@{user}" />
 
